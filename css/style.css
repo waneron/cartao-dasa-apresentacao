@@ -93,7 +93,7 @@ h2{
 /* ================= COLUNAS ================= */
 
 .current{
-    width:220px;
+    width:200px;
 }
 
 .future{
@@ -112,11 +112,11 @@ h2{
 }
 
 .current .section-title{
-    width:220px;
+    width:200px;
 }
 
 .future .section-title{
-    width:700px;
+    width:650px;
 }
 
 /* ================= FILO ================= */
@@ -124,45 +124,45 @@ h2{
 .filo-card{
     background:#ECEFF3;
     border-radius:28px;
-    padding:40px 30px;
+    padding:35px 25px;
     text-align:center;
 }
 
 .filo-card h3{
     color:#666;
-    font-size:56px;
+    font-size:50px;
     margin-bottom:20px;
 }
 
 .small-text{
     color:#777;
-    font-size:18px;
-    line-height:2.2;
+    font-size:17px;
+    line-height:2;
 }
 
 /* ================= SETA ================= */
 
 .arrow{
-    font-size:90px;
+    font-size:80px;
     color:var(--dasa-light);
     font-weight:300;
-    margin-top:160px;
+    margin-top:150px;
 }
 
 /* ================= ARQUITETURA ================= */
 
 .architecture{
     position:relative;
-    width:700px;
-    height:470px;
+    width:650px;
+    height:450px;
 }
 
 /* ================= CONEXÕES ================= */
 
 .connections{
     position:absolute;
-    width:700px;
-    height:470px;
+    width:650px;
+    height:450px;
     top:0;
     left:0;
     pointer-events:none;
@@ -183,18 +183,19 @@ h2{
 
 .cartao-box{
     position:absolute;
+
     left:50%;
-    top:130px;
+    top:120px;
     transform:translateX(-50%);
 
     background:var(--dasa-blue);
     color:white;
 
-    padding:32px 65px;
+    padding:28px 55px;
 
-    border-radius:28px;
+    border-radius:26px;
 
-    font-size:24px;
+    font-size:22px;
     font-weight:700;
 
     box-shadow:0 0 35px rgba(0,174,239,.35);
@@ -207,53 +208,53 @@ h2{
 
     background:white;
 
-    padding:18px 28px;
+    padding:16px 24px;
 
-    border-radius:20px;
+    border-radius:18px;
 
     box-shadow:0 5px 20px rgba(0,0,0,.06);
 
     font-weight:600;
-    font-size:16px;
+    font-size:15px;
 }
 
 /* ================= POSIÇÕES ================= */
 
 .nav-box{
-    left:50%;
+    left:325px;
     top:0;
     transform:translateX(-50%);
 }
 
 .one-data{
     left:40px;
-    top:80px;
+    top:90px;
 }
 
 .deep-water{
     right:0;
-    top:80px;
+    top:90px;
 }
 
 .mdm{
-    left:80px;
-    top:240px;
+    left:90px;
+    top:235px;
 }
 
 .pagamentos{
-    right:20px;
-    top:240px;
+    right:15px;
+    top:235px;
 }
 
 .agenda{
-    left:50%;
+    left:325px;
     top:330px;
     transform:translateX(-50%);
 }
 
 .provider{
-    left:50%;
-    top:430px;
+    left:325px;
+    top:420px;
     transform:translateX(-50%);
 }
 
