@@ -250,13 +250,13 @@ h2{
 
 .agenda{
     left:325px;
-    top:330px;
+    top:300px;
     transform:translateX(-50%);
 }
 
 .provider{
     left:325px;
-    top:420px;
+    top:390px;
     transform:translateX(-50%);
 }
 
