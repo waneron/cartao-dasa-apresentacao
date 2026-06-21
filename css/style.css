@@ -60,13 +60,13 @@ nav {
 
 h2 {
     color: var(--dasa-blue);
-    font-size: 52px;
+    font-size: 42px;
     margin-bottom: 20px;
 }
 
 .subtitle {
     color: var(--dasa-blue);
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 25px;
 }
@@ -105,7 +105,7 @@ h2 {
 
 .section-title {
     color: #8F99A3;
-    font-size: 42px;
+    font-size: 32px;
     font-weight: 700;
     margin-bottom: 40px;
     display: block;
@@ -131,20 +131,20 @@ h2 {
 
 .filo-card h3 {
     color: #666;
-    font-size: 50px;
+    font-size: 40px;
     margin-bottom: 20px;
 }
 
 .small-text {
     color: #777;
-    font-size: 17px;
+    font-size: 12px;
     line-height: 2;
 }
 
 /* ================= SETA ================= */
 
 .arrow {
-    font-size: 80px;
+    font-size: 65px;
     color: var(--dasa-light);
     font-weight: 300;
     margin-top: 155px;
@@ -154,8 +154,8 @@ h2 {
 
 .architecture {
     position: relative;
-    width: 650px;
-    height: 500px;
+    width: 600px;
+    height: 470px;
 }
 
 /* ================= SVG ================= */
@@ -191,9 +191,9 @@ h2 {
     transform: translateX(-50%);
     background: var(--dasa-blue);
     color: white;
-    padding: 28px 55px;
+    padding: 22px 46px;
     border-radius: 26px;
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     box-shadow: 0 0 35px rgba(0, 174, 239, .35);
 }
@@ -203,11 +203,11 @@ h2 {
 .system {
     position: absolute;
     background: white;
-    padding: 16px 24px;
+    padding: 12px 20px;
     border-radius: 18px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
     font-weight: 600;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 /* ================= POSIÇÕES ================= */
