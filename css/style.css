@@ -316,3 +316,37 @@ h2{
     position:absolute;
     left:0;
 }
+
+/* ================= HOME ================= */
+
+.hero{
+    padding:100px 0;
+}
+
+.hero h1{
+    font-size:72px;
+    color:var(--dasa-blue);
+    line-height:1.1;
+    margin-bottom:20px;
+}
+
+.hero p{
+    font-size:26px;
+    color:#1F2937;
+    margin-bottom:30px;
+}
+
+.button{
+    display:inline-block;
+    background:var(--dasa-blue);
+    color:white;
+    text-decoration:none;
+    padding:18px 32px;
+    border-radius:18px;
+    font-weight:600;
+    transition:.2s;
+}
+
+.button:hover{
+    background:#0050B8;
+}
