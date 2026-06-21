@@ -42,6 +42,7 @@ nav{
     color:#555;
     margin-left:30px;
     font-weight:500;
+    transition:.2s;
 }
 
 .menu a:hover{
@@ -74,7 +75,7 @@ h2{
     line-height:1.8;
     color:#666;
     font-size:20px;
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
 
 /* ================= MENSAGEM ================= */
@@ -86,150 +87,121 @@ h2{
     border-radius:20px;
     font-size:20px;
     line-height:1.8;
-    margin-bottom:50px;
+    margin-bottom:70px;
 }
 
 /* ================= TRANSIÇÃO ================= */
 
 .transition{
-
     display:flex;
-
-    align-items:center;
-
-    gap:70px;
+    align-items:flex-start;
+    gap:80px;
 }
 
 /* ================= COLUNAS ================= */
 
 .current{
-    width:180px;
+    width:220px;
 }
 
 .future{
     flex:1;
-    display:flex;
-    flex-direction:column;
 }
 
+/* ================= TÍTULOS ================= */
+
 .section-title{
-
     color:#8F99A3;
-
-    font-size:30px;
-
+    font-size:42px;
     font-weight:700;
-
-    margin-bottom:30px;
+    margin-bottom:25px;
+    display:block;
 }
 
 /* ================= FILO ================= */
 
 .filo-card{
-
     background:#ECEFF3;
-
-    border-radius:24px;
-
-    padding:28px;
-
+    border-radius:28px;
+    padding:40px 30px;
     text-align:center;
 }
 
 .filo-card h3{
-
     color:#666;
-
-    font-size:42px;
-
-    margin-bottom:20px;
+    font-size:64px;
+    margin-bottom:25px;
 }
 
 .small-text{
-
     color:#777;
-
-    font-size:16px;
-
-    line-height:2;
+    font-size:18px;
+    line-height:2.2;
 }
 
 /* ================= SETA ================= */
 
 .arrow{
-
-    font-size:90px;
-
+    font-size:110px;
     color:var(--dasa-light);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
+    margin-top:180px;
 }
 
 /* ================= ARQUITETURA ================= */
 
 .architecture{
-
     position:relative;
-
-    width:620px;
-
-    height:380px;
+    width:700px;
+    height:430px;
 }
 
 /* ================= CARTÃO ================= */
 
 .cartao-box{
-
     position:absolute;
 
-    left:205px;
-    top:130px;
+    left:220px;
+    top:120px;
 
     background:var(--dasa-blue);
-
     color:white;
 
-    padding:26px 50px;
+    padding:40px 80px;
 
-    border-radius:24px;
+    border-radius:32px;
 
-    font-size:24px;
+    font-size:28px;
+    font-weight:700;
 
-    font-weight:600;
-
-    box-shadow:0 0 30px rgba(0,174,239,.35);
+    box-shadow:0 0 35px rgba(0,174,239,.35);
 }
 
 /* ================= SISTEMAS ================= */
 
 .system{
-
     position:absolute;
 
     background:white;
 
-    padding:16px 24px;
+    padding:18px 28px;
 
-    border-radius:18px;
+    border-radius:20px;
 
     box-shadow:0 5px 20px rgba(0,0,0,.06);
 
     font-weight:600;
+    font-size:16px;
 }
 
-/* POSIÇÕES */
+/* ================= POSIÇÕES ================= */
 
 .nav-box{
-    left:255px;
+    left:300px;
     top:0;
 }
 
 .one-data{
-    left:30px;
+    left:40px;
     top:80px;
 }
 
@@ -239,21 +211,21 @@ h2{
 }
 
 .mdm{
-    left:60px;
-    top:220px;
+    left:80px;
+    top:240px;
 }
 
 .pagamentos{
-    right:0;
-    top:220px;
+    right:20px;
+    top:240px;
 }
 
 .agenda{
-    left:210px;
-    top:290px;
+    left:245px;
+    top:330px;
 }
 
 .provider{
-    left:215px;
-    top:345px;
+    left:255px;
+    top:395px;
 }
