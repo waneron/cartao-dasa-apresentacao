@@ -17,206 +17,86 @@ body{
     color:var(--text);
 }
 
-/* ================= MENU ================= */
+/* MENU */
 
 nav{
-
     position:sticky;
     top:0;
-
     background:white;
-
     padding:20px 60px;
-
     display:flex;
     justify-content:space-between;
     align-items:center;
-
     box-shadow:0 2px 10px rgba(0,0,0,.05);
-
     z-index:1000;
 }
 
 .logo{
-
     color:var(--dasa-blue);
-
     font-size:28px;
-
     font-weight:700;
 }
 
 .menu a{
-
     text-decoration:none;
-
     color:#555;
-
     margin-left:30px;
-
     font-weight:500;
-
-    transition:.2s;
 }
 
 .menu a:hover{
-
     color:var(--dasa-blue);
 }
 
-/* ================= GERAL ================= */
+/* GERAL */
 
 .container{
-
     max-width:1200px;
-
     margin:auto;
-
-    padding:80px 40px;
-}
-
-h1{
-
-    color:var(--dasa-blue);
-
-    font-size:72px;
-
-    line-height:1.1;
-
-    margin-bottom:30px;
+    padding:70px 40px;
 }
 
 h2{
-
     color:var(--dasa-blue);
-
-    font-size:56px;
-
-    margin-bottom:30px;
-}
-
-/* ================= HERO ================= */
-
-.hero{
-
-    min-height:75vh;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-}
-
-.hero p{
-
-    font-size:24px;
-
-    color:#666;
-}
-
-/* ================= CARDS ================= */
-
-.cards{
-
-    display:flex;
-
-    flex-wrap:wrap;
-
-    gap:25px;
-}
-
-.card{
-
-    flex:1;
-    min-width:300px;
-
-    background:white;
-
-    padding:40px;
-
-    border-radius:24px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.05);
-}
-
-.card h3{
-
-    color:var(--dasa-blue);
-
+    font-size:52px;
     margin-bottom:20px;
 }
 
-.card ul{
-
-    padding-left:20px;
-
-    line-height:2;
-}
-
-/* ================= BOTÕES ================= */
-
-.button{
-
-    display:inline-block;
-
-    margin-top:40px;
-
-    padding:18px 30px;
-
-    background:var(--dasa-blue);
-
-    color:white;
-
-    border-radius:12px;
-
-    text-decoration:none;
-}
-
-/* ================= TEXTO ================= */
-
 .subtitle{
-
     color:var(--dasa-blue);
-
-    font-size:34px;
-
+    font-size:30px;
     font-weight:600;
-
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 .intro-text{
-
     max-width:950px;
-
+    line-height:1.8;
     color:#666;
-
-    line-height:1.9;
-
     font-size:20px;
-
-    margin-bottom:70px;
+    margin-bottom:30px;
 }
 
-/* ================= QUOTE ================= */
+/* MENSAGEM PRINCIPAL */
 
-.quote{
+.message-box{
 
     background:white;
 
-    padding:40px;
-
     border-left:8px solid var(--dasa-light);
+
+    padding:30px;
 
     border-radius:20px;
 
-    font-size:22px;
+    font-size:20px;
 
     line-height:1.8;
 
-    margin-top:40px;
+    margin-bottom:60px;
 }
 
-/* ================= DESAFIO ================= */
+/* TRANSIÇÃO */
 
 .transition{
 
@@ -224,12 +104,12 @@ h2{
 
     align-items:flex-start;
 
-    gap:60px;
+    gap:70px;
 }
 
 .current{
 
-    width:220px;
+    width:180px;
 }
 
 .future{
@@ -245,9 +125,9 @@ h2{
 
     font-weight:600;
 
-    display:block;
-
     margin-bottom:20px;
+
+    display:block;
 }
 
 /* FILO */
@@ -256,9 +136,9 @@ h2{
 
     background:#ECEFF3;
 
-    border-radius:28px;
+    border-radius:24px;
 
-    padding:35px;
+    padding:30px;
 
     text-align:center;
 }
@@ -267,16 +147,16 @@ h2{
 
     color:#666;
 
-    font-size:54px;
+    font-size:42px;
 
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
 .small-text{
 
     color:#777;
 
-    font-size:18px;
+    font-size:16px;
 
     line-height:2;
 }
@@ -289,45 +169,41 @@ h2{
 
     color:var(--dasa-light);
 
-    margin-top:140px;
+    margin-top:110px;
 }
 
-/* ================= DIAGRAMA ================= */
+/* DIAGRAMA */
 
 .architecture{
 
     position:relative;
 
-    width:700px;
+    width:650px;
 
-    height:500px;
+    height:420px;
 }
-
-/* CARTÃO */
 
 .cartao-box{
 
     position:absolute;
 
-    left:220px;
-    top:170px;
+    left:210px;
+    top:160px;
 
     background:var(--dasa-blue);
 
     color:white;
 
-    padding:30px 55px;
+    padding:28px 55px;
 
     border-radius:24px;
 
-    font-size:26px;
+    font-size:24px;
 
     font-weight:600;
 
     box-shadow:0 0 30px rgba(0,174,239,.35);
 }
-
-/* DOMÍNIOS */
 
 .system{
 
@@ -335,7 +211,7 @@ h2{
 
     background:white;
 
-    padding:18px 24px;
+    padding:16px 24px;
 
     border-radius:18px;
 
@@ -344,46 +220,37 @@ h2{
     font-weight:600;
 }
 
-/* POSIÇÕES */
-
 .nav-box{
-
-    left:280px;
-    top:20px;
+    left:270px;
+    top:10px;
 }
 
 .one-data{
-
     left:40px;
-    top:100px;
+    top:90px;
 }
 
 .deep-water{
-
-    right:20px;
-    top:100px;
+    right:10px;
+    top:90px;
 }
 
 .mdm{
-
     left:80px;
-    top:280px;
+    top:260px;
 }
 
 .pagamentos{
-
-    right:30px;
-    top:280px;
+    right:10px;
+    top:260px;
 }
 
 .agenda{
-
-    left:220px;
-    top:360px;
+    left:210px;
+    top:330px;
 }
 
 .provider{
-
-    left:235px;
-    top:430px;
+    left:220px;
+    top:390px;
 }
