@@ -184,7 +184,7 @@ h2{
 .cartao-box{
     position:absolute;
 
-    left:50%;
+    left:325px;
     top:120px;
     transform:translateX(-50%);
 
