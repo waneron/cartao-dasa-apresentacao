@@ -273,3 +273,46 @@ h2{
     }
 
 }
+
+/* ================= CARDS CONTEXTO ================= */
+
+.cards{
+    display:flex;
+    gap:30px;
+    margin-top:50px;
+    flex-wrap:wrap;
+}
+
+.card{
+    background:white;
+    border-radius:24px;
+    padding:35px;
+    flex:1;
+    min-width:280px;
+    box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+.card h3{
+    color:var(--dasa-blue);
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+.card ul{
+    list-style:none;
+}
+
+.card li{
+    font-size:20px;
+    color:#555;
+    line-height:2;
+    position:relative;
+    padding-left:22px;
+}
+
+.card li::before{
+    content:"•";
+    color:var(--dasa-light);
+    position:absolute;
+    left:0;
+}
