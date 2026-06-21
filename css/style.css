@@ -154,7 +154,7 @@ h2{
 .architecture{
     position:relative;
     width:700px;
-    height:430px;
+    height:470px;
 }
 
 /* ================= CONEXÕES ================= */
@@ -162,28 +162,20 @@ h2{
 .connections{
     position:absolute;
     width:700px;
-    height:430px;
+    height:470px;
     top:0;
     left:0;
     pointer-events:none;
 }
 
 .flow-line{
-
     fill:none;
-
     stroke:#00AEEF;
-
     stroke-width:2;
-
     opacity:.85;
-
     stroke-linecap:round;
-
     stroke-dasharray:10 12;
-
     filter:drop-shadow(0 0 4px rgba(0,174,239,.5));
-
     animation:flow 8s linear infinite;
 }
 
@@ -192,8 +184,9 @@ h2{
 .cartao-box{
     position:absolute;
 
-    left:240px;
+    left:50%;
     top:130px;
+    transform:translateX(-50%);
 
     background:var(--dasa-blue);
     color:white;
@@ -228,8 +221,9 @@ h2{
 /* ================= POSIÇÕES ================= */
 
 .nav-box{
-    left:290px;
+    left:50%;
     top:0;
+    transform:translateX(-50%);
 }
 
 .one-data{
@@ -253,13 +247,15 @@ h2{
 }
 
 .agenda{
-    left:220px;
+    left:50%;
     top:330px;
+    transform:translateX(-50%);
 }
 
 .provider{
-    left:245px;
-    top:425px;
+    left:50%;
+    top:430px;
+    transform:translateX(-50%);
 }
 
 /* ================= ANIMAÇÃO ================= */
