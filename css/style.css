@@ -350,3 +350,26 @@ h2{
 .button:hover{
     background:#0050B8;
 }
+.hero{
+    padding:120px 0;
+}
+
+.hero h1{
+    font-size:72px;
+    color:var(--dasa-blue);
+    line-height:1.1;
+    margin-bottom:30px;
+}
+
+.hero-subtitle{
+    font-size:28px;
+    max-width:1000px;
+    margin-bottom:40px;
+}
+
+.hero-description{
+    max-width:950px;
+    font-size:22px;
+    line-height:1.8;
+    color:#4B5563;
+}
