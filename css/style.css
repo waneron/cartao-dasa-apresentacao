@@ -1,4 +1,3 @@
-```css
 :root{
     --dasa-blue:#003B8E;
     --dasa-light:#00AEEF;
@@ -170,10 +169,22 @@ h2{
 }
 
 .flow-line{
+
     fill:none;
-    stroke:#8AD8FF;
+
+    stroke:#00AEEF;
+
     stroke-width:2;
-    opacity:.8;
+
+    opacity:.85;
+
+    stroke-linecap:round;
+
+    stroke-dasharray:10 12;
+
+    filter:drop-shadow(0 0 4px rgba(0,174,239,.5));
+
+    animation:flow 8s linear infinite;
 }
 
 /* ================= CARTÃO ================= */
@@ -250,4 +261,17 @@ h2{
     left:255px;
     top:395px;
 }
-```
+
+/* ================= ANIMAÇÃO ================= */
+
+@keyframes flow{
+
+    from{
+        stroke-dashoffset:0;
+    }
+
+    to{
+        stroke-dashoffset:-200;
+    }
+
+}
