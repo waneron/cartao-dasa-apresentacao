@@ -1,3 +1,4 @@
+```css
 :root{
     --dasa-blue:#003B8E;
     --dasa-light:#00AEEF;
@@ -68,14 +69,6 @@ h2{
     font-size:30px;
     font-weight:600;
     margin-bottom:25px;
-}
-
-.intro-text{
-    max-width:950px;
-    line-height:1.8;
-    color:#666;
-    font-size:20px;
-    margin-bottom:30px;
 }
 
 /* ================= MENSAGEM ================= */
@@ -154,7 +147,7 @@ h2{
     font-size:90px;
     color:var(--dasa-light);
     font-weight:300;
-    margin-top:180px;
+    margin-top:160px;
 }
 
 /* ================= ARQUITETURA ================= */
@@ -163,6 +156,24 @@ h2{
     position:relative;
     width:700px;
     height:430px;
+}
+
+/* ================= CONEXÕES ================= */
+
+.connections{
+    position:absolute;
+    width:700px;
+    height:430px;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+
+.flow-line{
+    fill:none;
+    stroke:#8AD8FF;
+    stroke-width:2;
+    opacity:.8;
 }
 
 /* ================= CARTÃO ================= */
@@ -239,18 +250,4 @@ h2{
     left:255px;
     top:395px;
 }
-
-.connections{
-    position:absolute;
-    width:700px;
-    height:430px;
-    top:0;
-    left:0;
-    pointer-events:none;
-}
-
-.connections line{
-    stroke:#8AD8FF;
-    stroke-width:2;
-    opacity:.8;
-}
+```
