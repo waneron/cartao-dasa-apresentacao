@@ -142,8 +142,9 @@ h2{
 /* ================= SETA ================= */
 
 .arrow{
-    font-size:110px;
+    font-size:90px;
     color:var(--dasa-light);
+    font-weight:300;
     margin-top:180px;
 }
 
