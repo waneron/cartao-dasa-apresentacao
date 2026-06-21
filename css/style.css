@@ -17,10 +17,14 @@ body{
     color:var(--text);
 }
 
+/* ================= NAV ================= */
+
 nav{
     position:sticky;
     top:0;
+
     background:white;
+
     padding:20px 60px;
 
     display:flex;
@@ -43,7 +47,14 @@ nav{
     color:#555;
     margin-left:30px;
     font-weight:500;
+    transition:.2s;
 }
+
+.menu a:hover{
+    color:var(--dasa-blue);
+}
+
+/* ================= GERAL ================= */
 
 .container{
     max-width:1200px;
@@ -53,6 +64,7 @@ nav{
 
 .hero{
     min-height:80vh;
+
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -60,8 +72,11 @@ nav{
 
 .hero h1{
     color:var(--dasa-blue);
+
     font-size:72px;
+
     line-height:1.1;
+
     margin-bottom:30px;
 }
 
@@ -72,21 +87,54 @@ nav{
 
 h2{
     color:var(--dasa-blue);
-    font-size:42px;
-    margin-bottom:50px;
+
+    font-size:48px;
+
+    margin-bottom:20px;
 }
 
+.subtitle{
+
+    color:var(--dasa-blue);
+
+    font-size:28px;
+
+    font-weight:600;
+
+    margin-bottom:25px;
+}
+
+.intro-text{
+
+    color:#666;
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    max-width:950px;
+
+    margin-bottom:60px;
+}
+
+/* ================= CARDS ================= */
+
 .cards{
+
     display:flex;
+
     flex-wrap:wrap;
+
     gap:25px;
 }
 
 .card{
+
     flex:1;
     min-width:300px;
 
     background:white;
+
     padding:40px;
 
     border-radius:24px;
@@ -95,21 +143,29 @@ h2{
 }
 
 .card h3{
+
     color:var(--dasa-blue);
+
     margin-bottom:20px;
 }
 
 .card ul{
+
     padding-left:20px;
+
     line-height:2;
 }
 
+/* ================= BOTÃO ================= */
+
 .button{
+
     margin-top:40px;
 
     display:inline-block;
 
     background:var(--dasa-blue);
+
     color:white;
 
     padding:18px 30px;
@@ -118,6 +174,8 @@ h2{
 
     text-decoration:none;
 }
+
+/* ================= FRASE ================= */
 
 .quote{
 
@@ -130,7 +188,13 @@ h2{
     border-radius:20px;
 
     line-height:1.9;
+
+    font-size:20px;
+
+    margin-top:40px;
 }
+
+/* ================= ARQUITETURA ================= */
 
 .architecture{
 
@@ -152,10 +216,14 @@ h2{
 
 .connections line{
 
-    stroke:#00AEEF;
+    stroke:#7ED3FF;
+
     stroke-width:3;
-    opacity:.4;
+
+    opacity:.7;
 }
+
+/* ================= SISTEMAS ================= */
 
 .system{
 
@@ -165,70 +233,97 @@ h2{
 
     padding:20px 30px;
 
-    border-radius:18px;
+    border-radius:20px;
 
     box-shadow:0 8px 25px rgba(0,0,0,.08);
 
     font-weight:600;
 }
 
+/* ================= FILO ================= */
+
+.filo-box{
+
+    position:absolute;
+
+    left:455px;
+    top:0;
+
+    background:#ECEFF3;
+
+    color:#777;
+
+    padding:16px 30px;
+
+    border-radius:20px;
+
+    font-weight:700;
+}
+
+/* ================= CARTÃO ================= */
+
 .cartao-box{
 
     position:absolute;
 
-    left:390px;
-    top:220px;
+    left:360px;
+    top:210px;
 
     background:#003B8E;
+
     color:white;
 
-    padding:30px 50px;
+    padding:35px 70px;
 
-    border-radius:20px;
+    border-radius:24px;
 
-    font-size:22px;
+    font-size:28px;
 
-    box-shadow:0 0 30px rgba(0,174,239,.5);
+    font-weight:600;
+
+    box-shadow:0 0 35px rgba(0,174,239,.45);
 }
+
+/* ================= POSIÇÕES ================= */
 
 .nav-box{
 
     left:450px;
-    top:20px;
+    top:110px;
 }
 
 .one-data{
 
-    left:120px;
-    top:120px;
+    left:150px;
+    top:150px;
 }
 
 .deep-water{
 
-    right:120px;
-    top:120px;
+    right:150px;
+    top:150px;
 }
 
 .mdm{
 
-    left:180px;
-    top:380px;
+    left:220px;
+    top:360px;
 }
 
 .pagamentos{
 
-    right:160px;
-    top:380px;
+    right:200px;
+    top:360px;
 }
 
 .agenda{
 
-    left:410px;
-    top:500px;
+    left:390px;
+    top:480px;
 }
 
 .provider{
 
-    left:410px;
-    top:620px;
+    left:405px;
+    top:590px;
 }
