@@ -114,8 +114,17 @@ h2{
     color:#8F99A3;
     font-size:42px;
     font-weight:700;
-    margin-bottom:25px;
+    margin-bottom:40px;
     display:block;
+    text-align:center;
+}
+
+.current .section-title{
+    width:220px;
+}
+
+.future .section-title{
+    width:700px;
 }
 
 /* ================= FILO ================= */
