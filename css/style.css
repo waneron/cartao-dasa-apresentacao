@@ -1,4 +1,3 @@
-```css
 :root{
     --dasa-blue:#003B8E;
     --dasa-light:#00AEEF;
@@ -76,27 +75,7 @@ nav{
     padding:80px 40px;
 }
 
-h2{
-
-    color:var(--dasa-blue);
-
-    font-size:48px;
-
-    margin-bottom:20px;
-}
-
-/* ================= HOME ================= */
-
-.hero{
-
-    min-height:80vh;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-}
-
-.hero h1{
+h1{
 
     color:var(--dasa-blue);
 
@@ -107,30 +86,31 @@ h2{
     margin-bottom:30px;
 }
 
+h2{
+
+    color:var(--dasa-blue);
+
+    font-size:56px;
+
+    margin-bottom:30px;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+
+    min-height:75vh;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
 .hero p{
 
     font-size:24px;
 
     color:#666;
-}
-
-/* ================= BOTÃO ================= */
-
-.button{
-
-    margin-top:40px;
-
-    display:inline-block;
-
-    background:var(--dasa-blue);
-
-    color:white;
-
-    padding:18px 30px;
-
-    border-radius:12px;
-
-    text-decoration:none;
 }
 
 /* ================= CARDS ================= */
@@ -172,29 +152,52 @@ h2{
     line-height:2;
 }
 
-/* ================= FRASES ================= */
+/* ================= BOTÕES ================= */
+
+.button{
+
+    display:inline-block;
+
+    margin-top:40px;
+
+    padding:18px 30px;
+
+    background:var(--dasa-blue);
+
+    color:white;
+
+    border-radius:12px;
+
+    text-decoration:none;
+}
+
+/* ================= TEXTO ================= */
 
 .subtitle{
 
     color:var(--dasa-blue);
 
-    font-size:28px;
+    font-size:34px;
 
     font-weight:600;
 
-    margin-bottom:25px;
+    margin-bottom:30px;
 }
 
 .intro-text{
 
     max-width:950px;
 
-    line-height:1.8;
-
     color:#666;
 
-    margin-bottom:60px;
+    line-height:1.9;
+
+    font-size:20px;
+
+    margin-bottom:70px;
 }
+
+/* ================= QUOTE ================= */
 
 .quote{
 
@@ -206,9 +209,9 @@ h2{
 
     border-radius:20px;
 
-    line-height:1.9;
+    font-size:22px;
 
-    font-size:20px;
+    line-height:1.8;
 
     margin-top:40px;
 }
@@ -219,9 +222,9 @@ h2{
 
     display:flex;
 
-    align-items:center;
+    align-items:flex-start;
 
-    gap:50px;
+    gap:60px;
 }
 
 .current{
@@ -236,7 +239,7 @@ h2{
 
 .section-title{
 
-    color:#999;
+    color:#9AA0A6;
 
     font-size:18px;
 
@@ -247,38 +250,46 @@ h2{
     margin-bottom:20px;
 }
 
+/* FILO */
+
 .filo-card{
 
     background:#ECEFF3;
 
-    border-radius:24px;
+    border-radius:28px;
 
-    padding:30px;
+    padding:35px;
 
     text-align:center;
 }
 
 .filo-card h3{
 
-    font-size:36px;
-
     color:#666;
 
-    margin-bottom:20px;
+    font-size:54px;
+
+    margin-bottom:25px;
 }
 
 .small-text{
 
     color:#777;
 
-    line-height:1.9;
+    font-size:18px;
+
+    line-height:2;
 }
+
+/* SETA */
 
 .arrow{
 
-    font-size:80px;
+    font-size:90px;
 
     color:var(--dasa-light);
+
+    margin-top:140px;
 }
 
 /* ================= DIAGRAMA ================= */
@@ -289,30 +300,34 @@ h2{
 
     width:700px;
 
-    height:520px;
+    height:500px;
 }
+
+/* CARTÃO */
 
 .cartao-box{
 
     position:absolute;
 
-    left:230px;
-    top:190px;
+    left:220px;
+    top:170px;
 
     background:var(--dasa-blue);
 
     color:white;
 
-    padding:28px 50px;
+    padding:30px 55px;
 
     border-radius:24px;
 
-    font-size:24px;
+    font-size:26px;
 
     font-weight:600;
 
     box-shadow:0 0 30px rgba(0,174,239,.35);
 }
+
+/* DOMÍNIOS */
 
 .system{
 
@@ -329,47 +344,46 @@ h2{
     font-weight:600;
 }
 
-/* posições */
+/* POSIÇÕES */
 
 .nav-box{
 
     left:280px;
-    top:40px;
+    top:20px;
 }
 
 .one-data{
 
-    left:60px;
-    top:120px;
+    left:40px;
+    top:100px;
 }
 
 .deep-water{
 
-    right:40px;
-    top:120px;
+    right:20px;
+    top:100px;
 }
 
 .mdm{
 
-    left:90px;
-    top:320px;
+    left:80px;
+    top:280px;
 }
 
 .pagamentos{
 
-    right:70px;
-    top:320px;
+    right:30px;
+    top:280px;
 }
 
 .agenda{
 
-    left:240px;
-    top:400px;
+    left:220px;
+    top:360px;
 }
 
 .provider{
 
-    left:240px;
-    top:470px;
+    left:235px;
+    top:430px;
 }
-```
