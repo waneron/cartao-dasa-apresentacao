@@ -55,7 +55,7 @@ nav {
 .container {
     max-width: 1200px;
     margin: auto;
-    padding: 70px 40px;
+    padding: 50px 40px;
 }
 
 h2 {
@@ -274,7 +274,7 @@ h2 {
 .card {
     background: white;
     border-radius: 24px;
-    padding: 35px;
+    padding: 30px;
     flex: 1;
     min-width: 280px;
     box-shadow: 0 8px 25px rgba(0, 0, 0, .06);
@@ -291,7 +291,7 @@ h2 {
 }
 
 .card li {
-    font-size: 20px;
+    font-size: 18px;
     color: #555;
     line-height: 2;
     position: relative;
