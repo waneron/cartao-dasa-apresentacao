@@ -239,3 +239,18 @@ h2{
     left:255px;
     top:395px;
 }
+
+.connections{
+    position:absolute;
+    width:700px;
+    height:430px;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+
+.connections line{
+    stroke:#8AD8FF;
+    stroke-width:2;
+    opacity:.8;
+}
