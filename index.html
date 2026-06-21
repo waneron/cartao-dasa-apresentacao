@@ -1,26 +1,122 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
+
 <head>
+    <meta charset="UTF-8">
+
     <title>Cartão Dasa+</title>
+
+    <style>
+
+        body{
+            margin:0;
+            font-family: Arial, sans-serif;
+            background:#F5F7FA;
+            color:#1F2937;
+        }
+
+        .hero{
+            background:#002D72;
+            color:white;
+            padding:80px 40px;
+            text-align:center;
+        }
+
+        .hero h1{
+            font-size:48px;
+            margin-bottom:20px;
+        }
+
+        .hero p{
+            font-size:22px;
+            color:#D6E4FF;
+        }
+
+        .container{
+            max-width:1200px;
+            margin:auto;
+            padding:40px;
+        }
+
+        .cards{
+            display:flex;
+            gap:25px;
+            flex-wrap:wrap;
+        }
+
+        .card{
+            background:white;
+            flex:1;
+            min-width:300px;
+            padding:30px;
+            border-radius:16px;
+            box-shadow:0px 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h2{
+            color:#002D72;
+        }
+
+        ul{
+            padding-left:20px;
+        }
+
+    </style>
+
 </head>
+
 <body>
+
+<div class="hero">
+
     <h1>Internalização do Cartão Dasa+</h1>
 
-    <h2>Problema Atual</h2>
-    <ul>
-        <li>Solução Filo isolada</li>
-        <li>Cadastro próprio</li>
-        <li>Pagamentos próprios</li>
-    </ul>
+    <p>
+        Do clube de benefícios para a plataforma de fidelização do ecossistema Dasa
+    </p>
 
-    <h2>Arquitetura Alvo</h2>
-    <ul>
-        <li>MDM Pessoas</li>
-        <li>Pagamentos</li>
-        <li>Core Agendamento</li>
-        <li>Resultados</li>
-        <li>One Data</li>
-        <li>NAV</li>
-    </ul>
+</div>
+
+<div class="container">
+
+    <div class="cards">
+
+        <div class="card">
+
+            <h2>Contexto</h2>
+
+            <p>
+                O Cartão Dasa+ tornou-se um ativo relevante para a companhia e atualmente opera apoiado na plataforma Filo.
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Visão Estratégica</h2>
+
+            <p>
+                Evoluir o Cartão Dasa+ para um programa estruturado de relacionamento e fidelização integrado ao ecossistema digital.
+            </p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Objetivo da Internalização</h2>
+
+            <ul>
+                <li>Controle da base de clientes</li>
+                <li>Experiência unificada</li>
+                <li>Redução de dependências</li>
+                <li>Preparação para evolução futura</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
