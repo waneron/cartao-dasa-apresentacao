@@ -1,1 +1,122 @@
+:root{
+    --blue:#003B8E;
+    --light:#00AEEF;
+    --bg:#F4F7FA;
+}
 
+body{
+    margin:0;
+    font-family:Inter;
+    background:var(--bg);
+}
+
+nav{
+    position:fixed;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-between;
+    padding:20px 40px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+.logo{
+    color:var(--blue);
+    font-weight:700;
+}
+
+.menu a{
+    margin-left:20px;
+    text-decoration:none;
+    color:#555;
+}
+
+section{
+    padding:120px 100px;
+    min-height:100vh;
+}
+
+h1{
+    font-size:58px;
+    color:var(--blue);
+}
+
+h2{
+    color:var(--blue);
+    margin-bottom:50px;
+}
+
+.cards{
+    display:flex;
+    gap:25px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    flex:1;
+    box-shadow:0 5px 20px rgba(0,0,0,.05);
+}
+
+.diagram{
+    position:relative;
+    height:700px;
+}
+
+.box{
+    position:absolute;
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.cartao{
+    background:#003B8E;
+    color:white;
+    left:40%;
+    top:280px;
+}
+
+.nav{
+    left:43%;
+    top:40px;
+}
+
+.onedata{
+    left:15%;
+    top:150px;
+}
+
+.deepwater{
+    right:15%;
+    top:150px;
+}
+
+.mdm{
+    left:20%;
+    bottom:220px;
+}
+
+.pagamentos{
+    right:20%;
+    bottom:220px;
+}
+
+.agenda{
+    left:40%;
+    bottom:120px;
+}
+
+.provider{
+    left:40%;
+    bottom:20px;
+}
+
+.quote{
+    margin-top:40px;
+    background:white;
+    padding:30px;
+    border-left:6px solid var(--light);
+}
