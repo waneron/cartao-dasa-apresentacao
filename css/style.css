@@ -131,7 +131,7 @@ h2 {
 
 .filo-card h3 {
     color: #666;
-    font-size: 40px;
+    font-size: 26px;
     margin-bottom: 20px;
 }
 
@@ -240,13 +240,13 @@ h2 {
 
 .agenda {
     left: 325px;
-    top: 200px;
+    top: 290px;
     transform: translateX(-50%);
 }
 
 .provider {
     left: 325px;
-    top: 300px;
+    top: 320px;
     transform: translateX(-50%);
 }
 
