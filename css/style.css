@@ -183,8 +183,7 @@ h2{
 
 .cartao-box{
     position:absolute;
-
-    left:48%;
+    left:50%;
     top:130px;
     transform:translateX(-50%);
 
@@ -221,7 +220,7 @@ h2{
 /* ================= POSIÇÕES ================= */
 
 .nav-box{
-    left:48%;
+    left:50%;
     top:0;
     transform:translateX(-50%);
 }
@@ -247,13 +246,13 @@ h2{
 }
 
 .agenda{
-    left:48%;
+    left:50%;
     top:330px;
     transform:translateX(-50%);
 }
 
 .provider{
-    left:48%;
+    left:50%;
     top:430px;
     transform:translateX(-50%);
 }
