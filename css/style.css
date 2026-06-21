@@ -138,8 +138,8 @@ h2{
 
 .filo-card h3{
     color:#666;
-    font-size:64px;
-    margin-bottom:25px;
+    font-size:56px;
+    margin-bottom:20px;
 }
 
 .small-text{
@@ -170,17 +170,17 @@ h2{
 .cartao-box{
     position:absolute;
 
-    left:220px;
-    top:120px;
+    left:240px;
+    top:130px;
 
     background:var(--dasa-blue);
     color:white;
 
-    padding:40px 80px;
+    padding:32px 65px;
 
-    border-radius:32px;
+    border-radius:28px;
 
-    font-size:28px;
+    font-size:24px;
     font-weight:700;
 
     box-shadow:0 0 35px rgba(0,174,239,.35);
