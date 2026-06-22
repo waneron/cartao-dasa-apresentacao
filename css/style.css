@@ -224,29 +224,29 @@ h2 {
 }
 
 .deep-water {
-    right: 40;
+    right: 0;
     top: 80px;
 }
 
 .mdm {
     left: 50px;
-    top: 235px;
+    top: 230px;
 }
 
 .pagamentos {
     right: 50px;
-    top: 235px;
+    top: 230px;
 }
 
 .agenda {
     left: 325px;
-    top: 280px;
+    top: 270px;
     transform: translateX(-50%);
 }
 
 .provider {
     left: 325px;
-    top: 350px;
+    top: 340px;
     transform: translateX(-50%);
 }
 
