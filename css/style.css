@@ -346,3 +346,20 @@ h2 {
 .button:hover {
     background: #0050B8;
 }
+
+
+/* NAVBAR */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 80px;
+    background: #fff;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0047AB;
+}
+
