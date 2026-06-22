@@ -15,7 +15,7 @@ body {
     font-family: 'Inter', sans-serif;
     background: var(--bg);
     color: var(--text);
-    overflow-y:hidden;
+    overflow-x: hidden;
 }
 
 /* ================= MENU ================= */
@@ -38,16 +38,63 @@ nav {
     font-weight: 700;
 }
 
+/* Menu horizontal */
+
+.menu {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
 .menu a {
     text-decoration: none;
     color: #555;
-    margin-left: 30px;
     font-weight: 500;
     transition: .2s;
+    margin: 0;
 }
 
 .menu a:hover {
     color: var(--dasa-blue);
+}
+
+/* Dropdown */
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    top: 38px;
+    left: 0;
+    min-width: 180px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,.12);
+    z-index: 99999;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 14px 18px;
+    white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+    background: #F5F7FA;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
 /* ================= GERAL ================= */
@@ -60,7 +107,8 @@ nav {
 
 h2 {
     color: var(--dasa-blue);
-    font-size: 36px;
+    font-size: 56px;
+    font-weight: 700;
     margin-bottom: 10px;
 }
 
@@ -68,7 +116,7 @@ h2 {
     color: var(--dasa-blue);
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 /* ================= MENSAGEM ================= */
@@ -76,8 +124,8 @@ h2 {
 .message-box {
     background: white;
     border-left: 8px solid var(--dasa-light);
-    padding: 30px;
-    border-radius: 20px;
+    padding: 40px;
+    border-radius: 24px;
     font-size: 20px;
     line-height: 1.8;
     margin-bottom: 70px;
@@ -127,7 +175,7 @@ h2 {
     border-radius: 28px;
     padding: 35px 25px;
     text-align: center;
-    margin-top:60px;
+    margin-top: 60px;
 }
 
 .filo-card h3 {
@@ -215,7 +263,7 @@ h2 {
 
 .nav-box {
     left: 325px;
-    top: 15;
+    top: 15px;
     transform: translateX(-50%);
 }
 
@@ -308,15 +356,15 @@ h2 {
 
 /* ================= HOME ================= */
 
-.hero{
-    padding:40px 0;
+.hero {
+    padding: 40px 0;
 }
 
-.hero h1{
-    font-size:56px;
-    color:var(--dasa-blue);
-    line-height:1.1;
-    margin-bottom:40px;
+.hero h1 {
+    font-size: 56px;
+    color: var(--dasa-blue);
+    line-height: 1.1;
+    margin-bottom: 40px;
 }
 
 .hero-subtitle {
@@ -325,11 +373,11 @@ h2 {
     margin-bottom: 40px;
 }
 
-.hero-description{
-    max-width:1000px;
-    font-size:20px;
-    line-height:1.8;
-    color:#4B5563;
+.hero-description {
+    max-width: 1000px;
+    font-size: 20px;
+    line-height: 1.8;
+    color: #4B5563;
 }
 
 .button {
@@ -346,20 +394,3 @@ h2 {
 .button:hover {
     background: #0050B8;
 }
-
-
-/* NAVBAR */
-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px 80px;
-    background: #fff;
-}
-
-.logo {
-    font-size: 28px;
-    font-weight: 700;
-    color: #0047AB;
-}
-
