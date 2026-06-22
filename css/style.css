@@ -215,7 +215,7 @@ h2 {
 
 .nav-box {
     left: 325px;
-    top: 0;
+    top: 15;
     transform: translateX(-50%);
 }
 
