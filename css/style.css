@@ -58,17 +58,22 @@ nav {
 
 /* ================= DROPDOWN ================= */
 
+
 .dropdown {
     position: relative;
-    padding-bottom: 12px;
+    display: flex;
+    align-items: center;
 }
+
+
 
 .dropdown > a {
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 0;
+    height: 100%;
 }
+
 
 .dropdown > a::after {
     content: "▾";
