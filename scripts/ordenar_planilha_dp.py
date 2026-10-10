@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
-"""Ordena a aba BM - GCP Atividades - DP sem criar card nem alterar prazo."""
+"""Ordena a aba BM - GCP Atividades - DP pela lógica da arquitetura.
+
+O cronograma escrito na planilha é preservado e não define a ordem.
+Lacunas entram só quando o documento ou a dependência de um card as nomeia.
+"""
 
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
+
 OUT = "/workspace/BM-GCP-Atividades-DP-ordem-temporal.xlsx"
 
-# Textos copiados da planilha original. Nada aqui é card novo.
-# ordem, etapa, card_id, descricao, complexidade, dependencia, cronograma,
-# responsavel, observacoes, conflito, posicao, url, linha_original
+# origem, etapa, card_id, descricao, complexidade, dependencia, cronograma,
+# responsavel, observacoes, base, posicao, url, linha_original
+# linha_original 0 = lacuna, não veio da planilha
+
+CARD = "Card da planilha"
+GAP_DOC = "Lacuna — documentação"
+GAP_DEP = "Lacuna — dependência citada no card"
+MARCO = "Marco pedido, sem card"
 
 ROWS = [
     (
-        "HML — base concluída",
+        CARD,
+        "1. HML — base já concluída",
         "424950",
         "[DP] Provisionar ambiente GKE HML",
         "Concluído",
@@ -20,13 +31,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Status Concluído. É o único card de ambiente e o nome é HML. A documentação cita o cluster Azure azr-hml02; este card é o GKE de homologação.",
+        "Status Concluído. Único card de ambiente, nome HML. A documentação cita o cluster Azure de homologação azr-hml02, namespaces busca, dataprovider-data e portal-cadastro.",
+        "Ponto de partida. O pedido é sair da homologação.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/424950/details",
         40,
     ),
     (
-        "HML — base concluída",
+        CARD,
+        "1. HML — base já concluída",
         "451661",
         "[DP] Migração GCP | Criar banco de dados",
         "Concluído",
@@ -34,13 +46,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Status Concluído. O card de migrar SQL Server está abortado; este é o banco que a planilha marca como criado.",
+        "Status Concluído. O card de migrar o SQL Server está abortado. A documentação descreve o Corporate (HML, master, réplica e staging) como o banco que serve as APIs.",
+        "O banco existe. A carga desse banco não tem card e entra mais adiante, antes do teste funcional.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451661/details",
         39,
     ),
     (
-        "HML — base concluída",
+        CARD,
+        "1. HML — base já concluída",
         "451684",
         "[DP] Migração GCP | Redis",
         "Concluído",
@@ -48,13 +61,14 @@ ROWS = [
         "",
         "Back End",
         "",
-        "",
-        "Status Concluído. A própria dependência diz que o teste espera os pods. A documentação lista dois Redis de 6 GB (DP Cache PRD e Busca); a planilha não separa HML e PRD.",
+        "Status Concluído. No diagrama, busca-cache fica entre o Corporate e as APIs. A documentação lista dois Redis de 6 GB: DP Cache PRD e Busca. A planilha não separa HML e PRD.",
+        "Concluído. O teste que a dependência pede espera os pods das APIs.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451684/details",
         35,
     ),
     (
-        "HML — base concluída",
+        CARD,
+        "1. HML — base já concluída",
         "476416",
         "Continuação - Criação de Workloads do projeto BUSCA -> datp-searcher-api-commons",
         "Concluído",
@@ -62,13 +76,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Status Concluído. O card 470112, de criação do mesmo workload, continua na planilha com observação 'atuando'.",
+        "Status Concluído. O card 470112, da criação do mesmo workload, segue com observação 'atuando'.",
+        "Concluído. O 470112 permanece na fila das APIs.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/476416/details",
         30,
     ),
     (
-        "HML — sem data, em paralelo",
+        CARD,
+        "2. HML — antes de subir workload",
         "424949",
         "[DP] Definir conectividade",
         "",
@@ -76,13 +91,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Sem data e sem dependência. Os workloads de busca registram que a conectividade por IP está errada. Nenhum deles cita o número deste card. Não há prazo para terminar antes de 20/10/26.",
+        "Único card de conectividade. Os workloads de busca registram que a conectividade por IP está errada. A seção de rede do documento (VNet, subnet, VPN, DNS, firewall) está vazia. O diagrama mostra as fontes K2/Gliese, base federada, MDM, GSC, hospitais e MV.",
+        "Antes dos workloads. Sem isso a aplicação sobe apontando para IP, que a própria planilha registra como errado.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/424949/details",
         43,
     ),
     (
-        "HML — sem data, em paralelo",
+        CARD,
+        "2. HML — antes de subir workload",
         "424942",
         "[DP] Adequação de pipelines CI/CD",
         "Alta",
@@ -90,13 +106,14 @@ ROWS = [
         "",
         "Infra",
         "telli",
-        "",
-        "Sem data. Nenhum outro card lista este como dependência. Fica no início da HML em paralelo, sem prazo atribuído.",
+        "Card de esteira, sem data. Nenhum workload cita este número como dependência.",
+        "Em paralelo com a conectividade. A planilha não diz que este card bloqueia a criação do workload.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/424942/details",
         31,
     ),
     (
-        "HML — Airflow local",
+        CARD,
+        "5. HML — Airflow, em paralelo com as APIs",
         "478326",
         "Spike -> Airflow na versao mais nova do airflow",
         "Alta",
@@ -104,223 +121,14 @@ ROWS = [
         "20/10/26",
         "Back End",
         "Aqui já vai ser possivel pegar imcompatibilidade de versao",
-        "A dependência é ambiente local, não o GKE de HML. A documentação diz que a versão 2.2.5 é muito baixa e que a versão precisa ser equalizada com a do Google antes de continuar a migração.",
-        "Data escrita: 20/10/26. É a POC citada pela linha sem card de adequação do Airflow.",
+        "A dependência é docker local, não o GKE. A documentação diz que a versão 2.2.5 é muito baixa e que é preciso equalizar com a versão do Google antes de continuar a migração. O débito técnico citado é a migração do Data Factory para o Airflow. A observação do diagrama: no lugar do Talend entrou Integration Services.",
+        "Abre a frente de Airflow, em paralelo com as APIs da etapa 3. A adequação nasce no fim desta POC. A carga e o portal esperam a adequação. A data 20/10/26 não posiciona o resto.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/478326/details",
         2,
     ),
     (
-        "HML — workloads com data",
-        "470110",
-        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-brand",
-        "Baixa",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "20/10/26",
-        "Back End",
-        "",
-        "",
-        "Data escrita: 20/10/26. Não cita Airflow nem Cognitive Search.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470110/details",
-        3,
-    ),
-    (
-        "HML — workloads com data",
-        "470109",
-        "Criação de Workloads do projeto BUSCA -> datp-infra-gateway -> (ZUUL)",
-        "Média",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "27/10/26",
-        "Back End",
-        "",
-        "",
-        "Data escrita: 27/10/26. No diagrama AS IS o gateway aparece como dp-zuul-proxy.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470109/details",
-        4,
-    ),
-    (
-        "HML — workloads com data",
-        "470118",
-        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-local",
-        "Média",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "07/11/26",
-        "Back End",
-        "",
-        "",
-        "Data escrita: 07/11/26.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470118/details",
-        5,
-    ),
-    (
-        "HML — workloads com data",
-        "470115",
-        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-healthinsurance",
-        "Alta",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "20/11/26",
-        "Back End",
-        "",
-        "",
-        "Data escrita: 20/11/26.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470115/details",
-        6,
-    ),
-    (
-        "HML — workloads com data",
-        "470113",
-        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-elegibility",
-        "Alta",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "29/11/26",
-        "Back End",
-        "",
-        "",
-        "Data escrita: 29/11/26. O documento lista a API de agendamento; este card está escrito como elegibility. As duas grafias foram mantidas separadas.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470113/details",
-        7,
-    ),
-    (
-        "HML — workloads com data",
-        "470112",
-        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-commons",
-        "Baixa",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "",
-        "Back End",
-        "atuando",
-        "",
-        "Sem data. Observação: atuando. A continuação 476416 está concluída. Entra com as outras APIs de busca, antes do card de testar conectividade.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470112/details",
-        17,
-    ),
-    (
-        "HML — workloads com data",
-        "424944",
-        "[DP] Migração de aplicações, APIs",
-        "Baixa",
-        "testar conectividade",
-        "15/12/26",
-        "Back End",
-        "",
-        "",
-        "Data escrita: 15/12/26. A dependência é testar conectividade, depois dos workloads de busca que têm data.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/424944/details",
-        8,
-    ),
-    (
-        "HML — índice, sem data",
-        "451682",
-        "[DP] Migração GCP | Index (cognitive search > vertex - adaptar na aplicação)",
-        "Alta",
-        "Maior Risco, descoberta",
-        "",
-        "Felipe Paixão | Back End",
-        "",
-        "No documento, Cognitive Search está como dependência externa, criticidade alta, e 'pode desacoplar' = TBD. O card já aponta Vertex e segue em descoberta. Não foi atribuída data.",
-        "Sem data. O card 470114 registra dependência de Cognitive Search. O card 470119, cancelado, registra a mesma dependência.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/451682/details",
-        41,
-    ),
-    (
-        "HML — índice, sem data",
-        "470114",
-        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-exam",
-        "Alta",
-        "Backend Hj a conectividade está por IP, isso é errado",
-        "",
-        "Back End",
-        "depende cognitiveSearch",
-        "",
-        "Sem data. A observação trava o card em Cognitive Search, por isso fica depois do 451682 e fora da fila datada de outubro e novembro.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/470114/details",
-        18,
-    ),
-    (
-        "HML — front e back do DP, sem data",
-        "469049",
-        "[DP] Migração GCP | Migrar Backend -> front do DP (adaptações)",
-        "Alta",
-        "Ajuste de codigo, versao, eventual erro",
-        "",
-        "Back End",
-        "",
-        "",
-        "Sem data. Não cita Airflow. A documentação aponta o repositório datp-backoffice-backend.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/469049/details",
-        15,
-    ),
-    (
-        "HML — front e back do DP, sem data",
-        "469051",
-        "[DP] Migração GCP | Migrar Frontend  portal do DP (adaptações)",
-        "Média",
-        "Ajuste de codigo, versao, eventual erro",
-        "",
-        "Back End",
-        "só é possivel testar o front com tudo integrado.",
-        "",
-        "Sem data. A observação fala do teste integrado, que é o card 451689. Não cita Airflow.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/469051/details",
-        14,
-    ),
-    (
-        "Dados — sem HML nem PRD no card",
-        "478328",
-        "BigQuery => substituir dataBricks",
-        "Alta",
-        "Galerinha de dados DP",
-        "29/01/27",
-        "Dados",
-        "Levar toda a orquestração do dataBricks para o BigQuery",
-        "Nenhum outro card lista este como dependência. A decisão de levar o Databricks para a GCP não está na planilha, então não entrou linha nova. O card 451674, converter ETLs, está cancelado. O documento só lista os workspaces de PRD e de HML, sem jobs.",
-        "Entrou pela data escrita, 29/01/27, entre o card de 15/12/26 e os de fevereiro de 2027. O card não diz HML nem PRD.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/478328/details",
-        9,
-    ),
-    (
-        "HML — portal e arquivo, data do card",
-        "451688",
-        "[DP] Migração GCP | Blob Storage (adaptações na aplicação)",
-        "Média",
-        "Criado, depende de airFlow, backend e frontEnd",
-        "03/02/27",
-        "Back End | Dados",
-        "",
-        "Data 03/02/27. A linha sem card de adequação do Airflow está em março–abril de 2027. Este card depende de Airflow, backend e frontend.",
-        "Data escrita: 03/02/27. A documentação registra 269 GB de Blob.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/451688/details",
-        10,
-    ),
-    (
-        "HML — portal e arquivo, data do card",
-        "451677",
-        "[DP] Migração GCP | Migrar Frontend  Protal de cadastro (adaptações)",
-        "Alta",
-        "Ajuste de codigo, versao, eventual erro",
-        "07/02/27",
-        "Back End",
-        "só é possivel testar o front com tudo integrado.",
-        "Data 07/02/27, anterior à adequação de Airflow escrita como março–abril de 2027. A observação diz que o front só é testável com tudo integrado.",
-        "Data escrita: 07/02/27.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/451677/details",
-        11,
-    ),
-    (
-        "HML — portal e arquivo, data do card",
-        "451681",
-        "[DP] Migração GCP | Migrar Backend -> portal de cadastro (adaptações)",
-        "Alta",
-        "Ajuste de codigo, versao, eventual erro",
-        "10/02/27",
-        "Back End",
-        "",
-        "Data 10/02/27, anterior à adequação de Airflow escrita como março–abril de 2027.",
-        "Data escrita: 10/02/27.",
-        "https://dasa.businessmap.io/ctrl_board/96/cards/451681/details",
-        12,
-    ),
-    (
-        "HML — Airflow, linha sem card",
+        CARD,
+        "5. HML — Airflow, em paralelo com as APIs",
         "",
         "Criar historia adequação airflow, vinculada ao fim da poc do Victor => necessario devido versao de airflow",
         "Alta",
@@ -328,13 +136,254 @@ ROWS = [
         "entre março e abril de 2027",
         "",
         "",
-        "Sem Card ID. A própria dependência diz que pode ser a maior data. Os cards 451688 (03/02/27), 451677 (07/02/27) e 451681 (10/02/27) estão antes, e o 451688 depende de Airflow. A planilha não resolve essa ordem. Não há card de workload de Airflow de HML; os seis workloads de Airflow têm 'prd' no nome.",
-        "Janela escrita na planilha. Ligada ao fim da POC do card 478326. A documentação pede equalizar a 2.2.5 com a versão do Google antes de continuar a migração.",
+        "Linha da planilha, sem Card ID. A documentação manda equalizar a versão antes de continuar a migração. Portal, Blob e backoffice citam Airflow como dependência.",
+        "Logo depois da POC. A janela de março–abril de 2027 fica registrada e não empurra esta linha para o fim. Blob e portal, datados em fevereiro na planilha, ficam depois dela porque dependem do Airflow.",
         "",
         13,
     ),
     (
-        "HML — cita Airflow, sem data",
+        GAP_DOC,
+        "5. HML — Airflow, em paralelo com as APIs",
+        "",
+        "Airflow de homologação no ar",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "A documentação lista Airflow de HML em datp-infra-database-stack.azr-hml02 e Airflow de PRD em dp-data-stack-airflow.k8s.dasaexp.io. Na planilha, os seis workloads de Airflow têm prd no nome.",
+        "Infra de HML, separada da adequação de código. Os cards de infra nomeados prd dizem que dependem de infra e não citam a POC. Não há card de HML para herdar essa frase: a linha existe por causa da documentação.",
+        "",
+        0,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "470110",
+        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-brand",
+        "Baixa",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "20/10/26",
+        "Back End",
+        "",
+        "Uma das seis APIs do documento: exam, healthinsurance, commons, agendamento, local e brand. Este card não cita Airflow nem Cognitive Search.",
+        "Depois da conectividade. Não espera o Airflow. A data 20/10/26 foi ignorada na ordenação.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470110/details",
+        3,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "470109",
+        "Criação de Workloads do projeto BUSCA -> datp-infra-gateway -> (ZUUL)",
+        "Média",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "27/10/26",
+        "Back End",
+        "",
+        "No diagrama o gateway aparece como dp-zuul-proxy, ao lado de autorização, rate limit e WAF. Não há card separado para WAF, rate limit ou API key.",
+        "Junto das APIs, depois da conectividade. A documentação não separa o gateway da entrada das APIs.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470109/details",
+        4,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "470118",
+        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-local",
+        "Média",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "07/11/26",
+        "Back End",
+        "",
+        "API local do documento. Não cita Airflow nem Cognitive Search.",
+        "Depois da conectividade. Data da planilha ignorada na ordenação.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470118/details",
+        5,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "470115",
+        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-healthinsurance",
+        "Alta",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "20/11/26",
+        "Back End",
+        "",
+        "API de convênio do documento. Não cita Airflow nem Cognitive Search.",
+        "Depois da conectividade. Data da planilha ignorada na ordenação.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470115/details",
+        6,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "470113",
+        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-elegibility",
+        "Alta",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "29/11/26",
+        "Back End",
+        "",
+        "O documento e o diagrama nomeiam busca-agendamento. A planilha nomeia elegibility. Não há outro card com o nome agendamento.",
+        "Permanece nesta fila porque o card não cita Airflow nem Cognitive Search. Não foi tratado como a API de agendamento.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470113/details",
+        7,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "470112",
+        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-commons",
+        "Baixa",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "",
+        "Back End",
+        "atuando",
+        "API commons do documento. A continuação 476416 está concluída. Este card segue 'atuando'.",
+        "Na mesma fila das outras APIs de busca que não citam índice.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470112/details",
+        17,
+    ),
+    (
+        CARD,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "424944",
+        "[DP] Migração de aplicações, APIs",
+        "Baixa",
+        "testar conectividade",
+        "15/12/26",
+        "Back End",
+        "",
+        "A dependência é testar conectividade, não teste funcional.",
+        "Logo depois dos workloads desta fila. Confirma que a aplicação enxerga o destino. O teste funcional espera dado, índice e portal.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/424944/details",
+        8,
+    ),
+    (
+        CARD,
+        "3. HML — front e back do DP, em paralelo com o Airflow",
+        "469049",
+        "[DP] Migração GCP | Migrar Backend -> front do DP (adaptações)",
+        "Alta",
+        "Ajuste de codigo, versao, eventual erro",
+        "",
+        "Back End",
+        "",
+        "A documentação aponta o repositório datp-backoffice-backend. O card não cita Airflow. O diagrama tem dp-backoffice-api-prd.",
+        "Sobe com as APIs. Não espera carga nem índice. O teste do frontend espera a integração.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/469049/details",
+        15,
+    ),
+    (
+        CARD,
+        "3. HML — front e back do DP, em paralelo com o Airflow",
+        "469051",
+        "[DP] Migração GCP | Migrar Frontend  portal do DP (adaptações)",
+        "Média",
+        "Ajuste de codigo, versao, eventual erro",
+        "",
+        "Back End",
+        "só é possivel testar o front com tudo integrado.",
+        "A documentação cita o frontend em dp-corporate-frontend e o repositório datp-backoffice-frontend. O card 470121, dp-corporate-frontend, está cancelado. A observação deste card fala do teste, que é o 451689.",
+        "A adaptação entra aqui. O teste do front fica no fim da HML, com o 451689.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/469051/details",
+        14,
+    ),
+    (
+        CARD,
+        "4. HML — índice e exam, em paralelo com o Airflow",
+        "451682",
+        "[DP] Migração GCP | Index (cognitive search > vertex - adaptar na aplicação)",
+        "Alta",
+        "Maior Risco, descoberta",
+        "",
+        "Felipe Paixão | Back End",
+        "",
+        "No diagrama, busca-search fica entre o Corporate e as APIs. No documento, Cognitive Search é dependência externa, criticidade alta, e 'pode desacoplar' está TBD. O card aponta Vertex e está em descoberta. A planilha só declara a dependência na API de exam e no dp-backend-api cancelado.",
+        "Antes da API de exam. As outras APIs não foram colocadas atrás deste card: a planilha não diz que elas leem o índice.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/451682/details",
+        41,
+    ),
+    (
+        CARD,
+        "4. HML — índice e exam, em paralelo com o Airflow",
+        "470114",
+        "Criação de Workloads do projeto BUSCA -> datp-searcher-api-exam",
+        "Alta",
+        "Backend Hj a conectividade está por IP, isso é errado",
+        "",
+        "Back End",
+        "depende cognitiveSearch",
+        "API de exam do documento. Observação: depende de Cognitive Search. Também registra conectividade por IP errada.",
+        "Depois do 451682 e depois da conectividade.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/470114/details",
+        18,
+    ),
+    (
+        GAP_DOC,
+        "6. HML — dado, depois do Airflow e do backend",
+        "",
+        "Carga, no banco de HML, dos dados de exame, unidade e convênio que hoje estão no Corporate",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "O DP serve exame, unidade e convênio para NAV e CDC. O diagrama leva as fontes ao Corporate, e o Corporate às APIs. Existe CORPORATE_HOM na documentação. O card 451661 cria o banco e está concluído. O card 451676, migrar SQL Server, está abortado. Não há card de carga.",
+        "Antes do teste funcional. Depois do Airflow, porque o caminho desenhado até o Corporate passa por Data Factory, Integration Services e Airflow. Se o banco criado já tiver esses dados, esta linha sai.",
+        "",
+        0,
+    ),
+    (
+        CARD,
+        "6. HML — dado, depois do Airflow e do backend",
+        "451688",
+        "[DP] Migração GCP | Blob Storage (adaptações na aplicação)",
+        "Média",
+        "Criado, depende de airFlow, backend e frontEnd",
+        "03/02/27",
+        "Back End | Dados",
+        "",
+        "A documentação registra 269 GB de Blob. A dependência do card pede Airflow, backend e frontend. A data 03/02/27 não define a posição.",
+        "Depois do Airflow de HML e depois do backend e do frontend do DP. A planilha não diz se o download D+1 lê este Blob; por isso o D+1 não foi colocado obrigatoriamente depois.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/451688/details",
+        10,
+    ),
+    (
+        GAP_DEP,
+        "6. HML — dado, depois do Airflow e do backend",
+        "",
+        "Cargas de cadastro",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Dependência escrita nos cards 470165 e 470100: 'Depende do airFlow pronto, cargas cadastro e D+1 (dowloads Cadastro)'. O diagrama tem o Portal de Cadastros como consumidor e, no desenho GCP, Excel do Portal Cadastro como fonte.",
+        "Antes dos workloads de portal que citam essa carga. Não há card, responsável nem prazo.",
+        "",
+        0,
+    ),
+    (
+        GAP_DEP,
+        "6. HML — dado, depois do Airflow e do backend",
+        "",
+        "Downloads D+1 de cadastro",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Mesma dependência dos cards 470165 e 470100. Não há card só para o D+1.",
+        "No mesmo bloco das cargas de cadastro. A ordem entre D+1 e Blob não está escrita.",
+        "",
+        0,
+    ),
+    (
+        CARD,
+        "7. HML — portal, depois da carga que ele cita",
         "468966",
         "Criação de Workloads do projeto BUSCA -> datp-backoffice-backend",
         "Alta",
@@ -342,13 +391,14 @@ ROWS = [
         "",
         "Back End",
         "depende do airFlow",
-        "Sem data. A observação diz que depende do Airflow. Não há card de Airflow de HML para apontar.",
-        "Fica depois da linha de adequação do Airflow e antes da homologação. Sem data atribuída.",
+        "Observação do card: depende do Airflow. Não cita a carga de cadastro.",
+        "Depois do Airflow de HML. Antes do teste integrado.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/468966/details",
         22,
     ),
     (
-        "HML — cita Airflow, sem data",
+        CARD,
+        "7. HML — portal, depois da carga que ele cita",
         "470165",
         "Criação de Workloads do projeto PORTAL-CADASTRO -> portal-cadastro-web",
         "Média",
@@ -356,13 +406,14 @@ ROWS = [
         "",
         "Back End | Dados | Infra",
         "depende do airFlow",
-        "A dependência cita Airflow pronto, cargas de cadastro e D+1. Não há card de cargas nem de D+1, nem card de Airflow de HML.",
-        "Sem data. Permanece antes da homologação porque o teste do portal, no card 451677, pede tudo integrado.",
+        "A documentação cita o frontend do portal de cadastro e o repositório datp-backoffice-frontend-portal. O card desse repositório, 468985, está cancelado.",
+        "Depois de Airflow, cargas de cadastro e D+1, como a dependência escreve.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470165/details",
         19,
     ),
     (
-        "HML — cita Airflow, sem data",
+        CARD,
+        "7. HML — portal, depois da carga que ele cita",
         "470100",
         "Criação de Workloads do projeto BUSCA -> datp-backoffice-frontend",
         "Média",
@@ -370,13 +421,44 @@ ROWS = [
         "",
         "Back End | Dados | Infra",
         "depende do airFlow",
-        "A dependência cita Airflow pronto, cargas de cadastro e D+1. Não há card de cargas nem de D+1, nem card de Airflow de HML.",
-        "Sem data. Mesma dependência do 470165.",
+        "Mesma dependência do 470165.",
+        "Junto do portal-cadastro-web.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470100/details",
         21,
     ),
     (
-        "HML — homologação",
+        CARD,
+        "7. HML — portal, depois da carga que ele cita",
+        "451681",
+        "[DP] Migração GCP | Migrar Backend -> portal de cadastro (adaptações)",
+        "Alta",
+        "Ajuste de codigo, versao, eventual erro",
+        "10/02/27",
+        "Back End",
+        "",
+        "Adaptação do backend do portal. A data 10/02/27 não define a posição. O card não cita Airflow no texto; o workload do portal cita.",
+        "No bloco do portal, junto dos workloads que a planilha amarra à carga. A data de fevereiro ficou para trás da adequação do Airflow de propósito.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/451681/details",
+        12,
+    ),
+    (
+        CARD,
+        "7. HML — portal, depois da carga que ele cita",
+        "451677",
+        "[DP] Migração GCP | Migrar Frontend  Protal de cadastro (adaptações)",
+        "Alta",
+        "Ajuste de codigo, versao, eventual erro",
+        "07/02/27",
+        "Back End",
+        "só é possivel testar o front com tudo integrado.",
+        "A observação condiciona o teste à integração. A data 07/02/27 não define a posição.",
+        "A adaptação fica neste bloco. O teste do front é o card 451689.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/451677/details",
+        11,
+    ),
+    (
+        CARD,
+        "8. HML — teste funcional, e em seguida carga",
         "451689",
         "[DP] Migração GCP | Testes Integrados, Homologação & Plano de Rollback",
         "Sem Definição de Escopo",
@@ -384,13 +466,44 @@ ROWS = [
         "",
         "",
         "",
-        "Único card de teste da planilha. Não cita teste de carga. Complexidade: sem definição de escopo. Dependência: ?? . O template do documento lista teste funcional e performance sem plano preenchido.",
-        "Fecha a HML. A posição segue o pedido de testar em homologação antes de planejar produção. O card não tem data.",
+        "Único card de teste. Não cita teste de carga. Sem definição de escopo. O template do documento lista teste funcional, performance, segurança e DR, todos sem conteúdo. Os fronts 451677 e 469051 dizem que só testam com tudo integrado.",
+        "Fecha o que a planilha chama de homologação. Produção só começa depois deste card e do teste de carga.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451689/details",
         36,
     ),
     (
-        "Produção — Airflow nomeado prd",
+        MARCO,
+        "8. HML — teste funcional, e em seguida carga",
+        "",
+        "Teste de carga em HML",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "Pedido desta ordenação: ter tudo em HML para testes funcionais e de carga antes de planejar produção. O documento cita Performance no template de testes e não define volume, API nem meta. Nenhum card descreve o teste.",
+        "Depois do teste funcional. Sem cenário, volume ou API. Não é um card do BusinessMap.",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "9. Produção — planejar depois do teste de HML",
+        "",
+        "GKE de produção",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "A documentação cita o cluster aks-prd-cadastro01, namespaces busca, dataprovider-data e portal-cadastro. O único card de GKE é o de HML, concluído.",
+        "Primeiro item de produção porque a HML já tem cluster e a produção, no documento, também tem. Não há card.",
+        "",
+        0,
+    ),
+    (
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "470150",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-worker-statefulset",
         "Média",
@@ -398,13 +511,14 @@ ROWS = [
         "09/10/26",
         "Infra",
         "infra",
-        "A data escrita é 09/10/26, anterior aos workloads de HML. O cronograma não foi reescrito. O bloco é produção porque o nome do card contém prd.",
-        "Mesma data dos outros cinco workloads de Airflow. Ordem entre eles é a da planilha original.",
+        "Nome com prd. Data escrita 09/10/26. A dependência é infra, não a POC do Airflow.",
+        "Produção, pelo nome. A data 09/10/26 não trouxe este card para antes da HML.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470150/details",
         23,
     ),
     (
-        "Produção — Airflow nomeado prd",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "470149",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd",
         "Média",
@@ -412,13 +526,14 @@ ROWS = [
         "09/10/26",
         "Infra",
         "infra",
-        "A data escrita é 09/10/26. O cronograma não foi reescrito. O bloco é produção porque o nome do card contém prd.",
-        "Mesma data dos outros workloads de Airflow nomeados prd.",
+        "Nome com prd. Data escrita 09/10/26.",
+        "No bloco de produção, na ordem em que a planilha lista os workloads de Airflow.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470149/details",
         24,
     ),
     (
-        "Produção — Airflow nomeado prd",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "470148",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-sync-users",
         "Média",
@@ -426,13 +541,14 @@ ROWS = [
         "09/10/26",
         "Infra",
         "infra",
-        "A data escrita é 09/10/26. O cronograma não foi reescrito. O bloco é produção porque o nome do card contém prd.",
-        "Mesma data dos outros workloads de Airflow nomeados prd.",
+        "Nome com prd. Data escrita 09/10/26.",
+        "No bloco de produção, na ordem original.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470148/details",
         25,
     ),
     (
-        "Produção — Airflow nomeado prd",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "470146",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-scheduler",
         "Média",
@@ -440,13 +556,14 @@ ROWS = [
         "09/10/26",
         "Infra",
         "infra",
-        "A data escrita é 09/10/26. O cronograma não foi reescrito. O bloco é produção porque o nome do card contém prd.",
-        "Mesma data dos outros workloads de Airflow nomeados prd.",
+        "Nome com prd. Data escrita 09/10/26.",
+        "No bloco de produção, na ordem original.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470146/details",
         26,
     ),
     (
-        "Produção — Airflow nomeado prd",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "470145",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-flower",
         "Média",
@@ -454,13 +571,14 @@ ROWS = [
         "09/10/26",
         "Infra",
         "infra",
-        "A data escrita é 09/10/26. O cronograma não foi reescrito. O bloco é produção porque o nome do card contém prd.",
-        "Mesma data dos outros workloads de Airflow nomeados prd.",
+        "Nome com prd. Data escrita 09/10/26.",
+        "No bloco de produção, na ordem original.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470145/details",
         27,
     ),
     (
-        "Produção — Airflow nomeado prd",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "468978",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-db-migrations",
         "Média",
@@ -468,13 +586,14 @@ ROWS = [
         "09/10/26",
         "Infra",
         "infra",
-        "A data escrita é 09/10/26. O cronograma não foi reescrito. O bloco é produção porque o nome do card contém prd.",
-        "Mesma data dos outros workloads de Airflow nomeados prd.",
+        "Nome com prd. Data escrita 09/10/26.",
+        "No bloco de produção, na ordem original.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/468978/details",
         28,
     ),
     (
-        "Produção — depois da homologação",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "451683",
         "[DP] Migração GCP | Event Hub para Pub/Sub",
         "Média",
@@ -482,13 +601,14 @@ ROWS = [
         "",
         "BD",
         "pode ficar por ultimo",
-        "",
-        "Sem data. A dependência e a observação pedem para ficar por último. Entra na produção, antes do cutover, porque o cutover é o go-live.",
+        "A documentação lista o Event Hub data-provider-prd. O desenho GCP tem Pub/Sub na ingestão. A planilha manda deixar por último. Nenhuma API cita Event Hub como dependência.",
+        "No fim da produção, antes do cutover. Fora do teste funcional de HML, como o card pede.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451683/details",
         29,
     ),
     (
-        "Produção — depois da homologação",
+        CARD,
+        "9. Produção — planejar depois do teste de HML",
         "451691",
         "[DP] Migração GCP | Cutover & Go-Live",
         "Sem Definição de Escopo",
@@ -496,13 +616,74 @@ ROWS = [
         "",
         "",
         "",
-        "Sem definição de escopo. O template do documento deixa em branco big bang ou gradual, DNS e janela de downtime.",
-        "Última linha da produção. Sem data. O card não descreve o que entra no go-live.",
+        "Sem definição de escopo. O template do documento deixa em branco big bang ou gradual, DNS e janela.",
+        "Última linha de produção. Sem escopo preenchido.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451691/details",
         34,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "10. Documentado, fora deste caminho",
+        "478328",
+        "BigQuery => substituir dataBricks",
+        "Alta",
+        "Galerinha de dados DP",
+        "29/01/27",
+        "Dados",
+        "Levar toda a orquestração do dataBricks para o BigQuery",
+        "Card mantido com o texto original. A decisão registrada é levar o Databricks para a GCP. O diagrama AS IS não desenha o Databricks no caminho até as APIs. O documento lista os workspaces de HML e de PRD e não descreve jobs. O card 451674, converter ETLs, está cancelado. O desenho GCP é uma plataforma genérica com BigQuery bronze, silver e gold; a matriz de estratégia do documento está em branco.",
+        "Fora da fila de HML e fora da produção. Nenhum outro card o cita. A data 29/01/27 não o coloca entre dezembro e fevereiro.",
+        "https://dasa.businessmap.io/ctrl_board/96/cards/478328/details",
+        9,
+    ),
+    (
+        GAP_DOC,
+        "10. Documentado, fora deste caminho",
+        "",
+        "Workspaces Databricks de HML e de PRD na GCP",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "A documentação lista o workspace de PRD adb-7665073515379548 e o de HML adb-887971986833958. Não há jobs, notebooks nem tabelas de saída. Não há card para levar esses workspaces à GCP. O card existente, 478328, pede BigQuery.",
+        "Não entrou na frente do teste funcional. O diagrama até as APIs não passa pelo Databricks. Sem a lista do que ele entrega, não há como saber se a API ou o portal esperam essa saída.",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "10. Documentado, fora deste caminho",
+        "",
+        "Staging SQL do caminho de ETL",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "A documentação lista STAGING_PRD, 2 vCores. O diagrama coloca Staging entre o Data Factory e o Talend, substituído por Integration Services. Não há card de staging.",
+        "Não sequenciado. A documentação não diz se o staging continua depois que o Data Factory for para o Airflow.",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "10. Documentado, fora deste caminho",
+        "",
+        "dp-api-gtw e dp-cad-proxy do diagrama AS IS",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "O diagrama AS IS nomeia dp-api-gtw e dp-cad-proxy. O gateway com card é o Zuul (470109). dp-backend-api (470119) está cancelado. Não há card com esses dois nomes.",
+        "Não sequenciado. O diagrama não diz o que cada um faz nem se o Zuul os cobre.",
+        "",
+        0,
+    ),
+    (
+        CARD,
+        "11. Fora da linha do tempo",
         "470119",
         "Criação de Workloads do projeto BUSCA -> dp-backend-api",
         "Cancelado",
@@ -510,13 +691,14 @@ ROWS = [
         "",
         "",
         "depende cognitiveSearch",
-        "",
-        "Complexidade Cancelado. Fora da ordem.",
+        "Complexidade Cancelado. A observação cita Cognitive Search.",
+        "Fora da ordem.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470119/details",
         16,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "11. Fora da linha do tempo",
         "468985",
         "Criação de Workloads do projeto PORTAL-CADASTRO -> datp-backoffice-frontend-portal",
         "Cancelado",
@@ -524,13 +706,14 @@ ROWS = [
         "",
         "",
         "depende do airFlow",
-        "",
-        "Complexidade Cancelado. Fora da ordem.",
+        "Complexidade Cancelado.",
+        "Fora da ordem. O repositório correspondente continua citado na documentação.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/468985/details",
         20,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "11. Fora da linha do tempo",
         "470121",
         "Criação de Workloads do projeto BUSCA -> dp-corporate-frontend",
         "Cancelado",
@@ -538,13 +721,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Complexidade Cancelado. Fora da ordem. A documentação ainda cita a URL dp-corporate-frontend.",
+        "Complexidade Cancelado. A documentação ainda cita a URL dp-corporate-frontend.",
+        "Fora da ordem. Não foi fundido com o card 469051.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470121/details",
         32,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "11. Fora da linha do tempo",
         "451674",
         "[DP] Migração GCP | Converter ETL's (DataBricks)",
         "Cancelado",
@@ -552,13 +736,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Complexidade Cancelado. Fora da ordem.",
+        "Complexidade Cancelado.",
+        "Fora da ordem.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451674/details",
         38,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "11. Fora da linha do tempo",
         "424941",
         "[DP] PostgreSQL - Levantamento de recursos para reescrita de código",
         "Cancelado",
@@ -566,13 +751,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Complexidade Cancelado. Fora da ordem.",
+        "Complexidade Cancelado.",
+        "Fora da ordem.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/424941/details",
         42,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "11. Fora da linha do tempo",
         "451676",
         "[DP] Migração GCP | Migrar banco de dados SQL Server -- ABORTADO",
         "Concluído",
@@ -580,13 +766,14 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Título ABORTADO e status Concluído. Fora do caminho de HML. A documentação diz que a réplica 3 não será migrada e está desligada.",
+        "Título ABORTADO e status Concluído. A documentação diz que a réplica 3 não será migrada e está desligada. Master com 10 vCores, réplica com 18, HML com 6, staging com 2. Tamanho citado: 461 GB.",
+        "Fora do caminho. A existência de réplica em produção não virou atividade.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/451676/details",
         37,
     ),
     (
-        "Fora da linha do tempo",
+        CARD,
+        "11. Fora da linha do tempo",
         "476063",
         "[DATP] DasaLogs -> api local - unidades",
         "Stand By",
@@ -594,125 +781,228 @@ ROWS = [
         "",
         "",
         "",
-        "",
-        "Complexidade Stand By. Fora da ordem. Sem data.",
+        "Complexidade Stand By.",
+        "Fora da ordem.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/476063/details",
         33,
     ),
 ]
 
-LACUNAS = [
-    (
-        "Teste de carga",
-        "Não há card. O card 451689 cobre testes integrados, homologação e rollback, sem escopo. No documento, o item Testes do plano de migração é template e cita Performance sem conteúdo.",
-        "Não foi criada atividade de teste de carga.",
-    ),
-    (
-        "Airflow de homologação",
-        "O documento lista Airflow de HML em datp-infra-database-stack.azr-hml02. Na planilha, os seis workloads de Airflow têm prd no nome e data 09/10/26.",
-        "Os cards de PRD não foram duplicados para HML.",
-    ),
-    (
-        "Cargas de cadastro e download D+1",
-        "Aparecem só como dependência dos cards 470165 e 470100.",
-        "Não há card. Nenhuma linha foi criada.",
-    ),
-    (
-        "Databricks na GCP",
-        "O card 478328 pede levar a orquestração do Databricks para o BigQuery, em 29/01/27. O card 451674, converter ETLs, está cancelado. O documento lista workspace de PRD e de HML e não descreve jobs.",
-        "A decisão de mover o Databricks para a GCP não está na planilha. Não entrou linha nova.",
-    ),
-    (
-        "API de agendamento e API de elegibility",
-        "O documento diz que as APIs são exam, healthinsurance, commons, agendamento, local e brand. O diagrama tem busca-agendamento-backend. A planilha tem datp-searcher-api-elegibility (470113) e não tem card com o nome agendamento.",
-        "Os nomes não foram unidos e nenhum card foi criado.",
-    ),
-    (
-        "dp-api-gtw e dp-cad-proxy",
-        "Os dois aparecem no diagrama AS IS. O gateway com card é o Zuul (470109). dp-backend-api (470119) está cancelado.",
-        "Não foi criado card para o que o diagrama mostra e a planilha não lista.",
-    ),
-    (
-        "Réplica 3 do SQL",
-        "O documento diz que a réplica 3 não será migrada e está desligada. O card 451676 está abortado e concluído.",
-        "Não foi criada atividade.",
-    ),
-    (
-        "Identidade",
-        "No documento, Azure AD é dependência interna, alta, e não pode desacoplar. O template TO BE traz a linha Azure AD para Google IAM sem preenchimento. Front do DP usa AD, portal usa SSO, APIs usam API key.",
-        "Não foi criada atividade de identidade.",
-    ),
-    (
-        "Estratégia e ondas",
-        "As seções de 6Rs, roadmap, cutover e riscos do documento estão em branco.",
-        "A ordem não veio desse template. Veio da data, do texto de dependência e do pedido de fazer HML antes de produção.",
-    ),
-]
-
 REGRAS = [
-    "A aba traz as 42 linhas com conteúdo da planilha original. A linha em branco do fim foi descartada. Nenhum Card ID, prazo, responsável ou descrição foi alterado.",
-    "HML vem antes de produção. O único ambiente marcado como concluído é o GKE HML (424950). Os cards com prd no nome ficam no bloco de produção mesmo com data 09/10/26. Essa data permanece na coluna Cronograma.",
-    "Dentro da HML, card com data segue a data escrita. Card sem data entra no ponto em que o próprio texto o prende: conectividade e CI/CD no início, sem prazo; exam depois do índice; portal que cita Airflow depois da linha de adequação do Airflow; homologação no fim da HML.",
-    "O card 451689 é o único card de teste. Ele fecha a HML. Teste de carga não está escrito em lugar nenhum da planilha.",
-    "Produção, depois desse card: os seis workloads de Airflow nomeados prd, na ordem original; Event Hub, que a planilha manda deixar por último; Cutover, sem escopo.",
-    "Cancelado, Stand By e o SQL Server abortado ficam fora da linha do tempo, no fim da aba, para a lista continuar completa.",
-    "Onde a data de um card é anterior à dependência que ele mesmo cita, a coluna Limite registra o conflito. A ordem não escolhe uma das duas datas no lugar da outra.",
+    "A ordem segue dependência e arquitetura. A coluna Cronograma original guarda a data da planilha e não foi usada para ordenar. Várias datas se contradizem: portal e Blob em fevereiro de 2027, adequação do Airflow em março–abril de 2027, Airflow com nome prd em 09/10/26.",
+    "HML termina no teste funcional (card 451689) e no teste de carga, que não tem card. Produção começa depois. O único cluster concluído é o GKE de HML.",
+    "O que depende de Airflow fica depois da POC, da adequação de versão e do Airflow de HML. A documentação pede equalizar a 2.2.5 com a versão do Google antes de continuar a migração. As APIs que não citam Airflow nem Cognitive Search não esperam isso.",
+    "Exam fica depois do índice. As outras APIs não foram colocadas atrás do índice: só a exam e o dp-backend-api cancelado citam Cognitive Search. O diagrama desenha busca-search na frente do conjunto de APIs, e essa diferença está na aba Dúvidas.",
+    "Lacuna só entra quando a documentação nomeia o componente ou quando um card cita a dependência e não existe card para ela. Lacuna não tem Card ID, responsável, complexidade nem prazo.",
+    "BigQuery no lugar do Databricks ficou fora do caminho. A decisão é levar o Databricks para a GCP, o diagrama AS IS não o coloca até a API, e a documentação não lista o que os workspaces executam.",
+    "Cancelado, Stand By e o SQL Server abortado ficam no fim, para a lista original continuar completa.",
+]
+
+DUVIDAS = [
+    (
+        "1",
+        "O banco criado no card 451661 já tem, em HML, exame, unidade e convênio?",
+        "Se já tiver, a lacuna de carga sai da frente do teste funcional. Se não tiver, ela continua depois do Airflow, porque o desenho atual leva o dado ao Corporate por Data Factory, Integration Services e Airflow, e a migração do SQL Server está abortada.",
+    ),
+    (
+        "2",
+        "Quais APIs leem o Cognitive Search além da exam?",
+        "O diagrama coloca busca-search na frente das APIs. A planilha só trava a exam e o dp-backend-api cancelado. Se brand, local, health insurance, elegibility ou commons leem o índice, elas saem da etapa 4 e vão para depois do card 451682.",
+    ),
+    (
+        "3",
+        "O que o Databricks de HML entrega para a API ou para o portal?",
+        "A documentação só lista os workspaces. Sem jobs ou tabelas de saída, ele ficou fora da frente do teste. Se alguma carga do Corporate ou do cadastro sair de lá, ele entra antes do teste funcional.",
+    ),
+    (
+        "4",
+        "A linha de adequação do Airflow cobre a migração do Data Factory e do Integration Services, ou só a troca da versão 2.2.5?",
+        "O documento trata as duas coisas: débito de migrar o Data Factory para o Airflow, e o ponto de atenção da versão. Se forem trabalhos diferentes, falta uma atividade entre a POC e a carga.",
+    ),
+    (
+        "5",
+        "Existe Airflow de homologação na GCP, ou os cards com prd no nome são o que a HML vai usar?",
+        "O documento tem Airflow de HML e de PRD na Azure. A planilha só tem workload com prd no nome. A lacuna 'Airflow de homologação no ar' sai se a HML já estiver coberta.",
+    ),
+    (
+        "6",
+        "datp-searcher-api-elegibility é a API de agendamento do documento?",
+        "O documento lista agendamento entre as seis APIs. O diagrama nomeia busca-agendamento-backend. A planilha tem elegibility e não tem card chamado agendamento. Se forem duas APIs, falta o workload de agendamento.",
+    ),
+    (
+        "7",
+        "O card cancelado dp-corporate-frontend (470121) é o mesmo frontend do card 469051?",
+        "A documentação cita a URL dp-corporate-frontend e o repositório datp-backoffice-frontend. Um card está cancelado e o outro está na fila de HML. Sem essa resposta os dois não foram unidos.",
+    ),
+    (
+        "8",
+        "O download D+1 de cadastro lê o Blob?",
+        "O Blob depende de Airflow, backend e frontend. O portal depende de Airflow, cargas de cadastro e D+1. A planilha não liga um ao outro. Se o D+1 ler o Blob, o card 451688 fica antes das cargas.",
+    ),
+    (
+        "9",
+        "A conectividade do card 424949 inclui as fontes do diagrama?",
+        "K2/Gliese, base federada, MDM, GSC, hospitais e MV estão no desenho. A seção de rede do documento está vazia. O texto dos workloads fala só do IP da aplicação. Se as fontes forem outro trabalho, falta uma atividade antes da carga.",
+    ),
+    (
+        "10",
+        "No teste de HML a autenticação continua como está?",
+        "O documento marca Azure AD como dependência interna que não pode ser desacoplada. Frontend do DP usa AD, portal usa SSO, APIs usam API key. O template GCP escreve Azure AD para Google IAM e não foi preenchido. Nenhuma atividade de identidade foi criada.",
+    ),
+    (
+        "11",
+        "O que entra no teste de carga?",
+        "Não há card, volume, API nem meta. O template do documento cita Performance sem conteúdo. A linha está depois do teste funcional e antes da produção, sem cenário.",
+    ),
+    (
+        "12",
+        "dp-api-gtw e dp-cad-proxy entram nesta migração?",
+        "Estão no diagrama AS IS e não têm card. Ficaram fora do caminho. O Zuul tem card próprio.",
+    ),
+    (
+        "13",
+        "O staging SQL ainda faz parte do caminho em HML?",
+        "STAGING_PRD está na documentação, entre Data Factory e Integration Services. Não há card. Ficou fora do caminho.",
+    ),
+    (
+        "14",
+        "Event Hub entra no teste funcional de algum canal?",
+        "O card manda deixar por último e nenhuma API o cita. Ele está no fim da produção. Se NAV ou CDC dependem do evento para o teste de HML, ele sobe para antes do card 451689.",
+    ),
 ]
 
 
-def fills():
+def etapa_color(etapa):
+    n = etapa.split(".", 1)[0]
     return {
-        "HML — base concluída": "E7E6E6",
-        "HML — sem data, em paralelo": "D6E3F0",
-        "HML — Airflow local": "D6E3F0",
-        "HML — workloads com data": "DEEBF7",
-        "HML — índice, sem data": "FFF2CC",
-        "HML — front e back do DP, sem data": "DEEBF7",
-        "Dados — sem HML nem PRD no card": "E2D5F1",
-        "HML — portal e arquivo, data do card": "FCE4D6",
-        "HML — Airflow, linha sem card": "F8CBAD",
-        "HML — cita Airflow, sem data": "FCE4D6",
-        "HML — homologação": "C6EFCE",
-        "Produção — Airflow nomeado prd": "F4B183",
-        "Produção — depois da homologação": "F4B183",
-        "Fora da linha do tempo": "F2F2F2",
+        "1": "E7E6E6",
+        "2": "D6E3F0",
+        "3": "DEEBF7",
+        "4": "FFF2CC",
+        "5": "F8CBAD",
+        "6": "FCE4D6",
+        "7": "FCE4D6",
+        "8": "C6EFCE",
+        "9": "F4B183",
+        "10": "E2D5F1",
+    }.get(n, "F2F2F2")
+
+
+SEQUENCE = [
+    "424950",
+    "451661",
+    "451684",
+    "476416",
+    "424949",
+    "424942",
+    "470110",
+    "470109",
+    "470118",
+    "470115",
+    "470113",
+    "470112",
+    "424944",
+    "469049",
+    "469051",
+    "451682",
+    "470114",
+    "478326",
+    "Criar historia adequação airflow, vinculada ao fim da poc do Victor => necessario devido versao de airflow",
+    "Airflow de homologação no ar",
+    "Carga, no banco de HML, dos dados de exame, unidade e convênio que hoje estão no Corporate",
+    "451688",
+    "Cargas de cadastro",
+    "Downloads D+1 de cadastro",
+    "468966",
+    "470165",
+    "470100",
+    "451681",
+    "451677",
+    "451689",
+    "Teste de carga em HML",
+    "GKE de produção",
+    "470150",
+    "470149",
+    "470148",
+    "470146",
+    "470145",
+    "468978",
+    "451683",
+    "451691",
+    "478328",
+    "Workspaces Databricks de HML e de PRD na GCP",
+    "Staging SQL do caminho de ETL",
+    "dp-api-gtw e dp-cad-proxy do diagrama AS IS",
+    "470119",
+    "468985",
+    "470121",
+    "451674",
+    "424941",
+    "451676",
+    "476063",
+]
+
+
+def sequence_key(row):
+    card_id, descricao = row[2], row[3]
+    token = card_id or descricao
+    try:
+        return SEQUENCE.index(token)
+    except ValueError as exc:
+        raise SystemExit(f"fora da sequência: {token}") from exc
+
+
+def origem_font(origem):
+    if origem == CARD:
+        return Font(name="Calibri", size=10)
+    return Font(name="Calibri", size=10, italic=True, color="833C0C")
+
+
+def header_style():
+    return {
+        "fill": PatternFill("solid", fgColor="1F4E79"),
+        "font": Font(color="FFFFFF", bold=True, name="Calibri", size=11),
+        "border": Border(
+            left=Side(style="thin", color="D9D9D9"),
+            right=Side(style="thin", color="D9D9D9"),
+            top=Side(style="thin", color="D9D9D9"),
+            bottom=Side(style="thin", color="D9D9D9"),
+        ),
     }
 
 
-def apply_header(ws, headers):
-    header_fill = PatternFill("solid", fgColor="1F4E79")
-    header_font = Font(color="FFFFFF", bold=True, name="Calibri", size=11)
-    thin = Border(
-        left=Side(style="thin", color="D9D9D9"),
-        right=Side(style="thin", color="D9D9D9"),
-        top=Side(style="thin", color="D9D9D9"),
-        bottom=Side(style="thin", color="D9D9D9"),
-    )
-    for col, text in enumerate(headers, 1):
-        cell = ws.cell(1, col, text)
-        cell.fill = header_fill
-        cell.font = header_font
-        cell.alignment = Alignment(wrap_text=True, vertical="center")
-        cell.border = thin
-    ws.row_dimensions[1].height = 32
-    ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{ws.max_row}"
+def prepare_sheet(ws, last_col, last_row):
     ws.freeze_panes = "A2"
-    ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}1"
+    ws.auto_filter.ref = f"A1:{get_column_letter(last_col)}{last_row}"
+    ws.auto_filter.add_sort_condition("A2:A200")
+    ws.sheet_view.showGridLines = False
     ws.page_setup.orientation = "landscape"
     ws.page_setup.fitToPage = True
     ws.page_setup.fitToWidth = 1
     ws.page_setup.fitToHeight = 0
     ws.page_setup.paperSize = ws.PAPERSIZE_A4
-    ws.sheet_properties.pageSetUpPr.fitToPage = True
-    ws.oddHeader.left.text = "BM - GCP Atividades - DP"
-    ws.oddFooter.right.text = "Página &P de &N"
     ws.page_setup.horizontalCentered = True
-    ws.print_title_rows = "1:1"
+    ws.sheet_properties.pageSetUpPr.fitToPage = True
     ws.page_margins.left = 0.4
     ws.page_margins.right = 0.4
     ws.page_margins.top = 0.6
     ws.page_margins.bottom = 0.6
-    return thin
+    ws.print_title_rows = "1:1"
+    ws.oddFooter.right.text = "Página &P de &N"
+    ws.sheet_view.zoomScale = 110
+    ws.page_setup.scale = 70
+
+
+def write_headers(ws, headers):
+    style = header_style()
+    for col, text in enumerate(headers, 1):
+        cell = ws.cell(1, col, text)
+        cell.fill = style["fill"]
+        cell.font = style["font"]
+        cell.alignment = Alignment(wrap_text=True, vertical="center")
+        cell.border = style["border"]
+    ws.row_dimensions[1].height = 32
+    return style["border"]
 
 
 def write_main(wb):
@@ -721,25 +1011,25 @@ def write_main(wb):
     headers = [
         "Ordem",
         "Etapa",
+        "Origem",
         "Card ID",
         "Descrição",
         "Complexidade",
         "Depêndencia",
-        "Cronograma",
+        "Cronograma original (não usado na ordem)",
         "Recurso Responsável",
         "Observações",
-        "Limite do que está escrito",
+        "Base na planilha ou na documentação",
         "Por que nesta posição",
         "Card URL",
         "Linha na planilha original",
     ]
-    thin = None
-    etapa_fills = fills()
-    body_font = Font(name="Calibri", size=10)
+    border = write_headers(ws, headers)
     link_font = Font(name="Calibri", size=10, color="0563C1", underline="single")
-    conflict_font = Font(name="Calibri", size=10, color="843C0C")
-    for i, row in enumerate(ROWS, 1):
+    ordered = sorted(ROWS, key=sequence_key)
+    for i, row in enumerate(ordered, 1):
         (
+            origem,
             etapa,
             card_id,
             descricao,
@@ -748,7 +1038,7 @@ def write_main(wb):
             cronograma,
             responsavel,
             observacoes,
-            conflito,
+            base,
             posicao,
             url,
             linha,
@@ -756,40 +1046,36 @@ def write_main(wb):
         values = [
             i,
             etapa,
-            card_id,
+            origem,
+            card_id or None,
             descricao,
-            complexidade,
-            dependencia,
-            cronograma,
-            responsavel,
-            observacoes,
-            conflito,
+            complexidade or None,
+            dependencia or None,
+            cronograma or None,
+            responsavel or None,
+            observacoes or None,
+            base,
             posicao,
-            url,
-            linha,
+            url or None,
+            linha or None,
         ]
+        fill = PatternFill("solid", fgColor=etapa_color(etapa))
+        font = origem_font(origem)
         for col, value in enumerate(values, 1):
-            cell = ws.cell(i + 1, col, value if value != "" else None)
-            cell.font = conflict_font if col == 10 and conflito else body_font
+            cell = ws.cell(i + 1, col, value)
+            cell.font = font
+            cell.fill = fill
             cell.alignment = Alignment(wrap_text=True, vertical="top")
-            cell.fill = PatternFill("solid", fgColor=etapa_fills[etapa])
-        url_cell = ws.cell(i + 1, 12)
+            cell.border = border
         if url:
+            url_cell = ws.cell(i + 1, 13)
             url_cell.hyperlink = url
             url_cell.font = link_font
-        ws.row_dimensions[i + 1].height = 48
-    thin = apply_header(ws, headers)
-    for row in ws.iter_rows(min_row=2, max_row=ws.max_row, max_col=len(headers)):
-        for cell in row:
-            cell.border = thin
-    widths = [8, 38, 12, 62, 24, 48, 28, 26, 42, 55, 55, 42, 16]
+        ws.row_dimensions[i + 1].height = 52
+    widths = [8, 46, 38, 12, 62, 24, 46, 28, 26, 36, 55, 55, 40, 14]
     for idx, width in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(idx)].width = width
-    ws.auto_filter.ref = f"A1:{get_column_letter(len(headers))}{ws.max_row}"
-    ws.auto_filter.add_sort_condition("A2:A43")
-    ws.print_options.horizontalCentered = True
-    ws.sheet_view.showGridLines = False
-    ws.oddHeader.center.text = ""
+    prepare_sheet(ws, len(headers), ws.max_row)
 
 
 def write_rules(wb):
@@ -798,13 +1084,11 @@ def write_rules(wb):
     ws["A1"] = "Como a aba foi ordenada"
     ws["A1"].font = Font(name="Calibri", size=14, bold=True, color="1F4E79")
     for i, text in enumerate(REGRAS, 3):
-        ws.cell(i, 1, text)
-        ws.cell(i, 1).alignment = Alignment(wrap_text=True, vertical="top")
-        ws.cell(i, 1).font = Font(name="Calibri", size=11)
-        ws.row_dimensions[i].height = 36
-    ws.column_dimensions["A"].width = 140
-    ws.row_dimensions[1].height = 22
-    ws.print_title_rows = "1:1"
+        cell = ws.cell(i, 1, text)
+        cell.alignment = Alignment(wrap_text=True, vertical="top")
+        cell.font = Font(name="Calibri", size=11)
+        ws.row_dimensions[i].height = 48
+    ws.column_dimensions["A"].width = 150
     ws.page_setup.orientation = "landscape"
     ws.page_setup.fitToPage = True
     ws.page_setup.fitToWidth = 1
@@ -815,57 +1099,35 @@ def write_rules(wb):
     ws.page_margins.right = 0.5
     ws.page_margins.top = 0.6
     ws.page_margins.bottom = 0.6
+    ws.print_title_rows = "1:1"
     ws.oddFooter.right.text = "Página &P de &N"
 
 
-def write_lacunas(wb):
-    ws = wb.create_sheet("Lacunas")
-    headers = ["Tema", "Onde aparece", "O que não foi feito"]
-    thin = Border(
-        left=Side(style="thin", color="D9D9D9"),
-        right=Side(style="thin", color="D9D9D9"),
-        top=Side(style="thin", color="D9D9D9"),
-        bottom=Side(style="thin", color="D9D9D9"),
-    )
-    for i, item in enumerate(LACUNAS, 2):
+def write_duvidas(wb):
+    ws = wb.create_sheet("Dúvidas")
+    headers = ["#", "Dúvida", "Como a resposta mexe na ordem"]
+    border = write_headers(ws, headers)
+    fill = PatternFill("solid", fgColor="FFF8E7")
+    font = Font(name="Calibri", size=10)
+    for i, item in enumerate(DUVIDAS, 2):
         for col, value in enumerate(item, 1):
             cell = ws.cell(i, col, value)
-            cell.font = Font(name="Calibri", size=10)
+            cell.font = font
+            cell.fill = fill
             cell.alignment = Alignment(wrap_text=True, vertical="top")
-            cell.border = thin
-            cell.fill = PatternFill("solid", fgColor="FFF8E7")
+            cell.border = border
         ws.row_dimensions[i].height = 48
-    apply_header(ws, headers)
-    for col in range(1, 4):
-        ws.cell(1, col).border = thin
-    for row in ws.iter_rows(min_row=1, max_row=1, max_col=3):
-        for cell in row:
-            cell.border = thin
-    ws.column_dimensions["A"].width = 42
-    ws.column_dimensions["B"].width = 88
-    ws.column_dimensions["C"].width = 55
-    ws.auto_filter.ref = f"A1:C{ws.max_row}"
-    ws.freeze_panes = "A2"
-    ws.sheet_view.showGridLines = False
-    ws.page_setup.orientation = "landscape"
-    ws.page_setup.fitToPage = True
-    ws.page_setup.fitToWidth = 1
-    ws.page_setup.fitToHeight = 1
-    ws.page_setup.paperSize = ws.PAPERSIZE_A4
-    ws.sheet_properties.pageSetUpPr.fitToPage = True
-    ws.page_margins.left = 0.5
-    ws.page_margins.right = 0.5
-    ws.page_margins.top = 0.6
-    ws.page_margins.bottom = 0.6
-    ws.print_title_rows = "1:1"
-    ws.oddFooter.right.text = "Página &P de &N"
+    ws.column_dimensions["A"].width = 6
+    ws.column_dimensions["B"].width = 78
+    ws.column_dimensions["C"].width = 88
+    prepare_sheet(ws, 3, ws.max_row)
 
 
 def main():
     wb = Workbook()
     write_main(wb)
     write_rules(wb)
-    write_lacunas(wb)
+    write_duvidas(wb)
     wb.save(OUT)
 
 
