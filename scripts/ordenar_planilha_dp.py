@@ -749,9 +749,9 @@ REGRAS = [
     "A passagem do Data Factory para o Airflow não entra nesta aba. Está concluída e é pré-requisito de outro projeto. O Airflow de partida está na Azure. Nesta lista a frente é migrar esse Airflow para a GCP: primeiro a spike, por causa da versão 2.2.5, depois a adequação. Carga, Blob e portal esperam essa migração. As APIs que não citam Airflow nem Cognitive Search não esperam.",
     "Exam fica depois do índice. As outras APIs não foram colocadas atrás do índice: só a exam e o dp-backend-api cancelado citam Cognitive Search. O diagrama desenha busca-search na frente do conjunto de APIs, e essa diferença está na aba Dúvidas.",
     "Lacuna só entra quando a documentação nomeia o componente ou quando um card cita a dependência e não existe card para ela. Lacuna não tem Card ID, responsável, complexidade nem prazo.",
-    "A coluna Indicação fica vazia quando a atividade é da equipe e permanece no caminho. O texto 'Inclusa por IA — gap identificado' marca o que não tinha card: a documentação ou a dependência de um card mostrou a falta. Nada disso recebeu responsável, prazo ou Card ID.",
+    "A coluna Origem recebe ' - IA' quando a linha não tinha card. A documentação ou a dependência de um card mostrou a falta. Essas linhas não têm responsável, prazo nem Card ID. Origem sem ' - IA' é atividade da equipe que permanece no caminho.",
     "O card de BigQuery no lugar do Databricks, o DasaLogs, o frontend dp-corporate-frontend e o repositório datp-backoffice-frontend-portal foram para a aba Discutir com a equipe. São itens da planilha que não se sustentam neste caminho.",
-    "Cards cancelados ou abortados que não entram nessa discussão ficam no fim, com Indicação 'Equipe — encerrada'.",
+    "Cards cancelados ou abortados que não entram nessa discussão ficam no fim, na etapa Encerrada pela equipe. O status deles sai da coluna Complexidade.",
 ]
 
 DUVIDAS = [
@@ -970,15 +970,30 @@ DISCUSS_WHY = {
     ),
 }
 
-AI_GAP = "Inclusa por IA — gap identificado"
+STATUS_DO_CARD = {
+    "Concluído",
+    "Cancelado",
+    "Stand By",
+    "Sem Definição de Escopo",
+}
+COMPLEXIDADE = {"Alta", "Média", "Baixa"}
 
 
-def indicacao_de(origem, etapa):
+def separar_status_e_complexidade(valor):
+    texto = (valor or "").strip()
+    if not texto:
+        return None, None
+    if texto in STATUS_DO_CARD:
+        return texto, None
+    if texto in COMPLEXIDADE:
+        return None, texto
+    raise SystemExit(f"valor inesperado na coluna Complexidade: {texto}")
+
+
+def origem_visivel(origem):
     if origem != CARD:
-        return AI_GAP
-    if etapa == "Encerrada pela equipe":
-        return "Equipe — encerrada"
-    return None
+        return f"{origem} - IA"
+    return origem
 
 
 def write_main(wb):
@@ -987,17 +1002,17 @@ def write_main(wb):
     headers = [
         "Ordem",
         "Etapa",
-        "Indicação",
+        "Descrição",
         "Origem",
         "Card ID",
-        "Descrição",
+        "Status",
         "Complexidade",
         "Depêndencia",
         "Cronograma original (não usado na ordem)",
         "Recurso Responsável",
         "Observações",
-        "Base na planilha ou na documentação",
         "Por que nesta posição",
+        "Base na planilha ou na documentação",
         "Card URL",
         "Linha na planilha original",
     ]
@@ -1024,21 +1039,22 @@ def write_main(wb):
             url,
             linha,
         ) = row
-        indicacao = indicacao_de(origem, etapa)
+        status, complexidade_somente = separar_status_e_complexidade(complexidade)
+        origem_coluna = origem_visivel(origem)
         values = [
             i,
             etapa,
-            indicacao,
-            origem,
-            card_id or None,
             descricao,
-            complexidade or None,
+            origem_coluna,
+            card_id or None,
+            status,
+            complexidade_somente,
             dependencia or None,
             cronograma or None,
             responsavel or None,
             observacoes or None,
-            base,
             posicao,
+            base,
             url or None,
             linha or None,
         ]
@@ -1046,7 +1062,7 @@ def write_main(wb):
         font = origem_font(origem)
         for col, value in enumerate(values, 1):
             cell = ws.cell(i + 1, col, value)
-            cell.font = ai_font if col == 3 and indicacao == AI_GAP else font
+            cell.font = ai_font if col == 4 and origem != CARD else font
             cell.fill = fill
             cell.alignment = Alignment(wrap_text=True, vertical="top")
             cell.border = border
@@ -1055,7 +1071,7 @@ def write_main(wb):
             url_cell.hyperlink = url
             url_cell.font = link_font
         ws.row_dimensions[i + 1].height = 52
-    widths = [8, 46, 38, 36, 12, 62, 24, 46, 28, 26, 36, 55, 55, 40, 14]
+    widths = [8, 46, 62, 42, 12, 24, 16, 46, 28, 26, 36, 55, 55, 40, 14]
     for idx, width in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(idx)].width = width
     prepare_sheet(ws, len(headers), ws.max_row)
@@ -1065,8 +1081,9 @@ def write_discuss(wb):
     ws = wb.create_sheet("Discutir com a equipe", 1)
     headers = [
         "Ordem",
-        "Card ID",
         "Descrição",
+        "Card ID",
+        "Status",
         "Complexidade",
         "Depêndencia",
         "Cronograma original",
@@ -1097,11 +1114,13 @@ def write_discuss(wb):
             url,
             linha,
         ) = by_id[card_id]
+        status, complexidade_somente = separar_status_e_complexidade(complexidade)
         values = [
             i,
-            card_id,
             descricao,
-            complexidade or None,
+            card_id,
+            status,
+            complexidade_somente,
             dependencia or None,
             cronograma or None,
             responsavel or None,
@@ -1117,11 +1136,11 @@ def write_discuss(wb):
             cell.alignment = Alignment(wrap_text=True, vertical="top")
             cell.border = border
         if url:
-            url_cell = ws.cell(i + 1, 10)
+            url_cell = ws.cell(i + 1, 11)
             url_cell.hyperlink = url
             url_cell.font = link_font
         ws.row_dimensions[i + 1].height = 60
-    widths = [8, 12, 62, 22, 42, 24, 24, 36, 70, 42, 14]
+    widths = [8, 62, 12, 22, 16, 42, 24, 24, 36, 70, 42, 14]
     for idx, width in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(idx)].width = width
     prepare_sheet(ws, len(headers), ws.max_row)
