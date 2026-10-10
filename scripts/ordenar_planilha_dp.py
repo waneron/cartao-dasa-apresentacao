@@ -473,7 +473,7 @@ ROWS = [
     ),
     (
         GAP_DOC,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "",
         "GKE de produção",
         "",
@@ -488,7 +488,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "470150",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-worker-statefulset",
         "Média",
@@ -503,7 +503,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "470149",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd",
         "Média",
@@ -518,7 +518,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "470148",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-sync-users",
         "Média",
@@ -533,7 +533,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "470146",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-scheduler",
         "Média",
@@ -548,7 +548,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "470145",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-flower",
         "Média",
@@ -563,7 +563,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "468978",
         "Criação de Workloads do projeto DATAPROVIDER-DATA -> dp-data-stack-airflow-prd-db-migrations",
         "Média",
@@ -578,7 +578,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "451683",
         "[DP] Migração GCP | Event Hub para Pub/Sub",
         "Média",
@@ -593,7 +593,7 @@ ROWS = [
     ),
     (
         CARD,
-        "9. Produção — planejar depois do teste de HML",
+        "10. Produção — planejar depois do teste de HML",
         "451691",
         "[DP] Migração GCP | Cutover & Go-Live",
         "Sem Definição de Escopo",
@@ -623,7 +623,7 @@ ROWS = [
     ),
     (
         GAP_DOC,
-        "10. Documentado, fora deste caminho",
+        "9. HML — Databricks na GCP, antes da produção",
         "",
         "Workspaces Databricks de HML e de PRD na GCP",
         "",
@@ -631,44 +631,14 @@ ROWS = [
         "",
         "",
         "",
-        "A documentação lista o workspace de PRD adb-7665073515379548 e o de HML adb-887971986833958. Não há jobs, notebooks nem tabelas de saída. Não há card para levar esses workspaces à GCP. O card existente, 478328, pede BigQuery.",
-        "Não entrou na frente do teste funcional. O diagrama até as APIs não passa pelo Databricks. Sem a lista do que ele entrega, não há como saber se a API ou o portal esperam essa saída.",
-        "",
-        0,
-    ),
-    (
-        GAP_DOC,
-        "10. Documentado, fora deste caminho",
-        "",
-        "Staging SQL do caminho de ETL",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "A documentação lista STAGING_PRD, 2 vCores. O diagrama antigo coloca Staging no caminho de ETL. Não há card de staging.",
-        "Não sequenciado. A documentação não diz se o staging continua no Airflow que vai para a GCP.",
-        "",
-        0,
-    ),
-    (
-        GAP_DOC,
-        "10. Documentado, fora deste caminho",
-        "",
-        "dp-api-gtw e dp-cad-proxy do diagrama AS IS",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "O diagrama AS IS nomeia dp-api-gtw e dp-cad-proxy. O gateway com card é o Zuul (470109). dp-backend-api (470119) está cancelado. Não há card com esses dois nomes.",
-        "Não sequenciado. O diagrama não diz o que cada um faz nem se o Zuul os cobre.",
+        "A documentação lista o workspace de PRD adb-7665073515379548 e o de HML adb-887971986833958. Não há jobs, notebooks nem tabelas de saída. Não há card para levar esses workspaces à GCP. O card 478328, que pede BigQuery, está na aba de discussão.",
+        "Entra porque a decisão é levar o Databricks para a GCP e a documentação comprova que os workspaces existem. Fica depois do teste funcional: o diagrama até as APIs não passa pelo Databricks, então o teste não espera esta linha. Produção começa depois dela.",
         "",
         0,
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "470119",
         "Criação de Workloads do projeto BUSCA -> dp-backend-api",
         "Cancelado",
@@ -677,13 +647,13 @@ ROWS = [
         "",
         "depende cognitiveSearch",
         "Complexidade Cancelado. A observação cita Cognitive Search.",
-        "Fora da ordem.",
+        "Cancelado pela equipe. Os backends 469049 e 468966 continuam no caminho. O documento não descreve este card além da observação de Cognitive Search.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470119/details",
         16,
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "468985",
         "Criação de Workloads do projeto PORTAL-CADASTRO -> datp-backoffice-frontend-portal",
         "Cancelado",
@@ -692,13 +662,13 @@ ROWS = [
         "",
         "depende do airFlow",
         "Complexidade Cancelado.",
-        "Fora da ordem. O repositório correspondente continua citado na documentação.",
+        "Movida para a aba Discutir com a equipe.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/468985/details",
         20,
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "470121",
         "Criação de Workloads do projeto BUSCA -> dp-corporate-frontend",
         "Cancelado",
@@ -707,13 +677,13 @@ ROWS = [
         "",
         "",
         "Complexidade Cancelado. A documentação ainda cita a URL dp-corporate-frontend.",
-        "Fora da ordem. Não foi fundido com o card 469051.",
+        "Movida para a aba Discutir com a equipe.",
         "https://dasa.businessmap.io/ctrl_board/96/cards/470121/details",
         32,
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "451674",
         "[DP] Migração GCP | Converter ETL's (DataBricks)",
         "Cancelado",
@@ -728,7 +698,7 @@ ROWS = [
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "424941",
         "[DP] PostgreSQL - Levantamento de recursos para reescrita de código",
         "Cancelado",
@@ -743,7 +713,7 @@ ROWS = [
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "451676",
         "[DP] Migração GCP | Migrar banco de dados SQL Server -- ABORTADO",
         "Concluído",
@@ -758,7 +728,7 @@ ROWS = [
     ),
     (
         CARD,
-        "11. Fora da linha do tempo",
+        "Encerrada pela equipe",
         "476063",
         "[DATP] DasaLogs -> api local - unidades",
         "Stand By",
@@ -775,12 +745,13 @@ ROWS = [
 
 REGRAS = [
     "A ordem segue dependência e arquitetura. A coluna Cronograma original guarda a data da planilha e não foi usada para ordenar. Várias datas se contradizem: portal e Blob em fevereiro de 2027, adequação do Airflow em março–abril de 2027, Airflow com nome prd em 09/10/26.",
-    "HML termina no teste funcional (card 451689) e no teste de carga, que não tem card. Produção começa depois. O único cluster concluído é o GKE de HML.",
+    "O teste funcional (card 451689) e o teste de carga fecham o que a HML precisa para testar. A linha de Databricks na GCP fica depois desse teste e antes da produção, e não bloqueia o teste. O único cluster concluído é o GKE de HML.",
     "A passagem do Data Factory para o Airflow não entra nesta aba. Está concluída e é pré-requisito de outro projeto. O Airflow de partida está na Azure. Nesta lista a frente é migrar esse Airflow para a GCP: primeiro a spike, por causa da versão 2.2.5, depois a adequação. Carga, Blob e portal esperam essa migração. As APIs que não citam Airflow nem Cognitive Search não esperam.",
     "Exam fica depois do índice. As outras APIs não foram colocadas atrás do índice: só a exam e o dp-backend-api cancelado citam Cognitive Search. O diagrama desenha busca-search na frente do conjunto de APIs, e essa diferença está na aba Dúvidas.",
     "Lacuna só entra quando a documentação nomeia o componente ou quando um card cita a dependência e não existe card para ela. Lacuna não tem Card ID, responsável, complexidade nem prazo.",
-    "BigQuery no lugar do Databricks ficou fora do caminho. A decisão é levar o Databricks para a GCP, o diagrama AS IS não o coloca até a API, e a documentação não lista o que os workspaces executam.",
-    "Cancelado, Stand By e o SQL Server abortado ficam no fim, para a lista original continuar completa.",
+    "A coluna Indicação fica vazia quando a atividade é da equipe e permanece no caminho. O texto 'Inclusa por IA — gap identificado' marca o que não tinha card: a documentação ou a dependência de um card mostrou a falta. Nada disso recebeu responsável, prazo ou Card ID.",
+    "O card de BigQuery no lugar do Databricks, o DasaLogs, o frontend dp-corporate-frontend e o repositório datp-backoffice-frontend-portal foram para a aba Discutir com a equipe. São itens da planilha que não se sustentam neste caminho.",
+    "Cards cancelados ou abortados que não entram nessa discussão ficam no fim, com Indicação 'Equipe — encerrada'.",
 ]
 
 DUVIDAS = [
@@ -797,7 +768,7 @@ DUVIDAS = [
     (
         "3",
         "O que o Databricks de HML entrega para a API ou para o portal?",
-        "A documentação só lista os workspaces. Sem jobs ou tabelas de saída, ele ficou fora da frente do teste. Se alguma carga do Corporate ou do cadastro sair de lá, ele entra antes do teste funcional.",
+        "A linha dos workspaces foi inclusa por gap e ficou depois do teste funcional, porque o diagrama até as APIs não passa pelo Databricks. Se a API ou o portal consomem a saída, ela sobe para antes do card 451689.",
     ),
     (
         "4",
@@ -858,8 +829,8 @@ def etapa_color(etapa):
         "6": "FCE4D6",
         "7": "FCE4D6",
         "8": "C6EFCE",
-        "9": "F4B183",
-        "10": "E2D5F1",
+        "9": "E2D5F1",
+        "10": "F4B183",
     }.get(n, "F2F2F2")
 
 
@@ -894,6 +865,7 @@ SEQUENCE = [
     "451677",
     "451689",
     "Teste de carga em HML",
+    "Workspaces Databricks de HML e de PRD na GCP",
     "GKE de produção",
     "470150",
     "470149",
@@ -903,17 +875,10 @@ SEQUENCE = [
     "468978",
     "451683",
     "451691",
-    "478328",
-    "Workspaces Databricks de HML e de PRD na GCP",
-    "Staging SQL do caminho de ETL",
-    "dp-api-gtw e dp-cad-proxy do diagrama AS IS",
     "470119",
-    "468985",
-    "470121",
     "451674",
     "424941",
     "451676",
-    "476063",
 ]
 
 
@@ -979,12 +944,50 @@ def write_headers(ws, headers):
     return style["border"]
 
 
+DISCUSS_IDS = ("478328", "476063", "470121", "468985")
+
+DISCUSS_WHY = {
+    "478328": (
+        "A equipe pediu levar a orquestração do Databricks para o BigQuery. "
+        "O diagrama AS IS não passa pelo Databricks até as APIs. A ida para a GCP "
+        "não exige essa troca: a decisão deste plano é levar os workspaces, e o "
+        "card de converter os ETLs já está cancelado. O desenho com bronze, silver "
+        "e gold está no documento sem a estratégia preenchida."
+    ),
+    "476063": (
+        "A equipe deixou em stand-by. O documento de arquitetura não cita DasaLogs "
+        "no caminho de exame, unidade e convênio, nem nas APIs, no Airflow ou na busca."
+    ),
+    "470121": (
+        "A equipe cancelou o workload dp-corporate-frontend. A documentação ainda "
+        "aponta essa URL como frontend do DP. O card 469051 segue no caminho com outro nome. "
+        "Os dois não foram tratados como o mesmo frontend."
+    ),
+    "468985": (
+        "A equipe cancelou o workload do repositório datp-backoffice-frontend-portal. "
+        "A documentação cita esse repositório como frontend do portal de cadastro. "
+        "Os cards 470165 e 451677 seguem no caminho com outros nomes."
+    ),
+}
+
+AI_GAP = "Inclusa por IA — gap identificado"
+
+
+def indicacao_de(origem, etapa):
+    if origem != CARD:
+        return AI_GAP
+    if etapa == "Encerrada pela equipe":
+        return "Equipe — encerrada"
+    return None
+
+
 def write_main(wb):
     ws = wb.active
     ws.title = "BM - GCP Atividades - DP"
     headers = [
         "Ordem",
         "Etapa",
+        "Indicação",
         "Origem",
         "Card ID",
         "Descrição",
@@ -1000,7 +1003,11 @@ def write_main(wb):
     ]
     border = write_headers(ws, headers)
     link_font = Font(name="Calibri", size=10, color="0563C1", underline="single")
-    ordered = sorted(ROWS, key=sequence_key)
+    ai_font = Font(name="Calibri", size=10, bold=True, color="843C0C")
+    ordered = sorted(
+        (row for row in ROWS if row[2] not in DISCUSS_IDS),
+        key=sequence_key,
+    )
     for i, row in enumerate(ordered, 1):
         (
             origem,
@@ -1017,9 +1024,11 @@ def write_main(wb):
             url,
             linha,
         ) = row
+        indicacao = indicacao_de(origem, etapa)
         values = [
             i,
             etapa,
+            indicacao,
             origem,
             card_id or None,
             descricao,
@@ -1037,19 +1046,88 @@ def write_main(wb):
         font = origem_font(origem)
         for col, value in enumerate(values, 1):
             cell = ws.cell(i + 1, col, value)
+            cell.font = ai_font if col == 3 and indicacao == AI_GAP else font
+            cell.fill = fill
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+            cell.border = border
+        if url:
+            url_cell = ws.cell(i + 1, 14)
+            url_cell.hyperlink = url
+            url_cell.font = link_font
+        ws.row_dimensions[i + 1].height = 52
+    widths = [8, 46, 38, 36, 12, 62, 24, 46, 28, 26, 36, 55, 55, 40, 14]
+    for idx, width in enumerate(widths, 1):
+        ws.column_dimensions[get_column_letter(idx)].width = width
+    prepare_sheet(ws, len(headers), ws.max_row)
+
+
+def write_discuss(wb):
+    ws = wb.create_sheet("Discutir com a equipe", 1)
+    headers = [
+        "Ordem",
+        "Card ID",
+        "Descrição",
+        "Complexidade",
+        "Depêndencia",
+        "Cronograma original",
+        "Recurso Responsável",
+        "Observações",
+        "Por que não entra neste caminho",
+        "Card URL",
+        "Linha na planilha original",
+    ]
+    border = write_headers(ws, headers)
+    by_id = {row[2]: row for row in ROWS if row[2] in DISCUSS_IDS}
+    fill = PatternFill("solid", fgColor="F8D7DA")
+    font = Font(name="Calibri", size=10)
+    link_font = Font(name="Calibri", size=10, color="0563C1", underline="single")
+    for i, card_id in enumerate(DISCUSS_IDS, 1):
+        (
+            _origem,
+            _etapa,
+            _card_id,
+            descricao,
+            complexidade,
+            dependencia,
+            cronograma,
+            responsavel,
+            observacoes,
+            _base,
+            _posicao,
+            url,
+            linha,
+        ) = by_id[card_id]
+        values = [
+            i,
+            card_id,
+            descricao,
+            complexidade or None,
+            dependencia or None,
+            cronograma or None,
+            responsavel or None,
+            observacoes or None,
+            DISCUSS_WHY[card_id],
+            url or None,
+            linha or None,
+        ]
+        for col, value in enumerate(values, 1):
+            cell = ws.cell(i + 1, col, value)
             cell.font = font
             cell.fill = fill
             cell.alignment = Alignment(wrap_text=True, vertical="top")
             cell.border = border
         if url:
-            url_cell = ws.cell(i + 1, 13)
+            url_cell = ws.cell(i + 1, 10)
             url_cell.hyperlink = url
             url_cell.font = link_font
-        ws.row_dimensions[i + 1].height = 52
-    widths = [8, 46, 38, 12, 62, 24, 46, 28, 26, 36, 55, 55, 40, 14]
+        ws.row_dimensions[i + 1].height = 60
+    widths = [8, 12, 62, 22, 42, 24, 24, 36, 70, 42, 14]
     for idx, width in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(idx)].width = width
     prepare_sheet(ws, len(headers), ws.max_row)
+    ws.oddHeader.left.text = "Discutir com a equipe"
+    ws.page_setup.orientation = "landscape"
+    ws.sheet_view.showGridLines = False
 
 
 def write_rules(wb):
@@ -1100,6 +1178,7 @@ def write_duvidas(wb):
 def main():
     wb = Workbook()
     write_main(wb)
+    write_discuss(wb)
     write_rules(wb)
     write_duvidas(wb)
     wb.save(OUT)
