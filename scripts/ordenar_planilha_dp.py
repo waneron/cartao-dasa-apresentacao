@@ -741,6 +741,81 @@ ROWS = [
         "https://dasa.businessmap.io/ctrl_board/96/cards/476063/details",
         33,
     ),
+    (
+        GAP_DOC,
+        "2. HML — antes de subir workload",
+        "",
+        "Autenticação dos canais na HML: API key, Azure AD e SSO",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "",
+        "dp-api-gtw e dp-cad-proxy do diagrama",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "3. HML — APIs e gateway, em paralelo com o Airflow",
+        "",
+        "API de agendamento documentada (busca-agendamento-backend)",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "6. HML — dado, depois do Airflow e do backend",
+        "",
+        "Conectividade com as fontes do diagrama",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+    ),
+    (
+        GAP_DOC,
+        "6. HML — dado, depois do Airflow e do backend",
+        "",
+        "Staging SQL no caminho do Airflow em HML",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        0,
+    ),
 ]
 
 REGRAS = [
@@ -749,7 +824,7 @@ REGRAS = [
     "A passagem do Data Factory para o Airflow não entra nesta aba. Está concluída e é pré-requisito de outro projeto. O Airflow de partida está na Azure. Nesta lista a frente é migrar esse Airflow para a GCP: primeiro a spike, por causa da versão 2.2.5, depois a adequação. Carga, Blob e portal esperam essa migração. As APIs que não citam Airflow nem Cognitive Search não esperam.",
     "Exam fica depois do índice. As outras APIs não foram colocadas atrás do índice: só a exam e o dp-backend-api cancelado citam Cognitive Search. O diagrama desenha busca-search na frente do conjunto de APIs, e essa diferença está na aba Dúvidas.",
     "Lacuna só entra quando a documentação nomeia o componente ou quando um card cita a dependência e não existe card para ela. Lacuna não tem Card ID, responsável, complexidade nem prazo.",
-    "A coluna Origem recebe ' - IA' quando a linha não tinha card. A documentação ou a dependência de um card mostrou a falta. Essas linhas não têm responsável, prazo nem Card ID. Origem sem ' - IA' é atividade da equipe que permanece no caminho.",
+    "A coluna Origem fica 'IA' quando a linha não tinha card. A base explica o que se espera e a coluna ao lado das observações diz por que a linha está naquele ponto. Essas linhas não têm responsável, prazo nem Card ID. Origem 'Card da planilha' é atividade da equipe.",
     "O card de BigQuery no lugar do Databricks, o DasaLogs, o frontend dp-corporate-frontend e o repositório datp-backoffice-frontend-portal foram para a aba Discutir com a equipe. São itens da planilha que não se sustentam neste caminho.",
     "Cards cancelados ou abortados que não entram nessa discussão ficam no fim, na etapa Encerrada pela equipe. O status deles sai da coluna Complexidade.",
 ]
@@ -840,12 +915,15 @@ SEQUENCE = [
     "451684",
     "476416",
     "424949",
+    "Autenticação dos canais na HML: API key, Azure AD e SSO",
     "424942",
     "470110",
     "470109",
+    "dp-api-gtw e dp-cad-proxy do diagrama",
     "470118",
     "470115",
     "470113",
+    "API de agendamento documentada (busca-agendamento-backend)",
     "470112",
     "424944",
     "469049",
@@ -854,6 +932,8 @@ SEQUENCE = [
     "470114",
     "478326",
     "Criar historia adequação airflow, vinculada ao fim da poc do Victor => necessario devido versao de airflow",
+    "Conectividade com as fontes do diagrama",
+    "Staging SQL no caminho do Airflow em HML",
     "Carga, no banco de HML, dos dados de exame, unidade e convênio que hoje estão no Corporate",
     "451688",
     "Cargas de cadastro",
@@ -992,8 +1072,208 @@ def separar_status_e_complexidade(valor):
 
 def origem_visivel(origem):
     if origem != CARD:
-        return f"{origem} - IA"
+        return "IA"
     return origem
+
+
+STORIES = {
+    "424950": (
+        "Homologação já tem cluster GKE. É aqui que as APIs sobem para o NAV e o CDC experimentarem antes da produção.",
+        "Começo do caminho. Sem este cluster não há onde publicar o DP.",
+    ),
+    "451661": (
+        "O banco de homologação já foi criado. A migração do SQL Server foi abortada, então este banco é o que as APIs vão ler no lugar do Corporate.",
+        "Já concluído. A carga dos dados entra mais adiante, senão a API sobe vazia.",
+    ),
+    "451684": (
+        "O Redis já foi migrado. No diagrama ele é o busca-cache, entre o Corporate e as APIs. O teste deste cache espera os pods no ar.",
+        "Concluído na base. A prova dele acontece quando as APIs estiverem de pé.",
+    ),
+    "476416": (
+        "A continuação do workload da API commons já foi concluída. O card 470112, da criação, ainda está em andamento.",
+        "Fica na base concluída. A criação restante segue com as outras APIs.",
+    ),
+    "424949": (
+        "Os workloads registram que a conectividade por IP está errada. O esperado é um endereço de homologação que o NAV e o CDC consigam chamar.",
+        "Antes de subir as APIs. Se o canal continuar no IP antigo, a HML não é usada.",
+    ),
+    "Autenticação dos canais na HML: API key, Azure AD e SSO": (
+        "O documento diz que o Azure AD não pode ser desacoplado. As APIs usam API key, o frontend do DP usa AD e o portal usa SSO. O esperado é a HML aceitar esse mesmo acesso.",
+        "Antes das APIs. O canal não deve ganhar outra identidade para chamar a homologação.",
+    ),
+    "424942": (
+        "A esteira precisa publicar no GKE de homologação. Nenhum workload cita este card como bloqueio.",
+        "Em paralelo com a conectividade. Não segura a subida do primeiro workload.",
+    ),
+    "470110": (
+        "API de brand, uma das consultas do documento. O esperado é ela responder em HML sem depender de Airflow nem de busca.",
+        "Sobe com as APIs que o canal chama direto, depois da conectividade e da autenticação.",
+    ),
+    "470109": (
+        "Gateway Zuul. No diagrama ele fica na entrada, com autorização, limite de taxa e WAF. O esperado é o NAV e o CDC entrarem por aqui.",
+        "Junto das APIs. É a porta de entrada da homologação.",
+    ),
+    "dp-api-gtw e dp-cad-proxy do diagrama": (
+        "O diagrama AS IS nomeia dp-api-gtw e dp-cad-proxy e não há card. O esperado é decidir se o Zuul já cobre os dois ou se cada um precisa de workload em HML.",
+        "Ao lado do gateway. Sem essa decisão não se sabe se o canal perde uma porta.",
+    ),
+    "470118": (
+        "API de local, a consulta de unidade. O esperado é o canal consultar unidade na HML, sem Airflow e sem índice de busca.",
+        "Na mesma fila das APIs de consulta direta.",
+    ),
+    "470115": (
+        "API de convênio. O esperado é o canal consultar convênio na HML.",
+        "Na mesma fila das APIs de consulta direta.",
+    ),
+    "470113": (
+        "Workload de elegibility. O documento chama a outra API de agendamento e o diagrama mostra busca-agendamento-backend. Este card não usa esse nome.",
+        "Sobe com as APIs que não citam busca. A linha de agendamento, ao lado, cobre o nome da documentação.",
+    ),
+    "API de agendamento documentada (busca-agendamento-backend)": (
+        "O documento lista agendamento entre as seis APIs e o diagrama mostra busca-agendamento-backend. Não há card com esse nome. O esperado é essa consulta existir em HML. Se for o mesmo serviço da elegibility (470113), as duas linhas viram uma.",
+        "Na fila das APIs, para o nome do documento não ficar sem dono.",
+    ),
+    "470112": (
+        "API commons. A continuação 476416 está concluída e este card segue em andamento. O esperado é ela no ar com as outras.",
+        "Na mesma fila, antes do teste de conectividade.",
+    ),
+    "424944": (
+        "Teste de conectividade das APIs, não teste funcional. O esperado é confirmar que a aplicação enxerga o destino novo, ainda sem exigir o dado completo.",
+        "Logo depois dos workloads desta fila. O teste com o canal espera o dado e a busca.",
+    ),
+    "469049": (
+        "Backend do frontend do DP, repositório datp-backoffice-backend. O esperado é o backoffice responder em HML. Não cita Airflow.",
+        "Sobe com as APIs. O teste da tela espera a integração.",
+    ),
+    "469051": (
+        "Frontend do DP. A documentação cita a URL dp-corporate-frontend; o workload com esse nome está cancelado e ficou para discussão. O esperado é esta adaptação ser a tela aberta em HML, testada só com tudo integrado.",
+        "A adaptação entra aqui. O teste da tela é o card 451689.",
+    ),
+    "451682": (
+        "O diagrama coloca o busca-search entre o Corporate e as APIs. O documento marca o Cognitive Search como dependência alta, ainda sem decisão de desacoplamento. O card troca o índice para Vertex. O esperado é a busca de exam funcionar como hoje.",
+        "Antes da API de exam. As outras APIs não esperam este card: a planilha só cita a busca na exam.",
+    ),
+    "470114": (
+        "API de exam. Depende do Cognitive Search e também registra conectividade por IP errada. O esperado é o canal buscar exame na HML pelo índice novo.",
+        "Depois do índice e depois da conectividade.",
+    ),
+    "478326": (
+        "O Airflow já está na Azure. Esta spike, em docker local, acha o que quebra da versão 2.2.5 para a versão do Google. O esperado é a lista de incompatibilidades antes de migrar.",
+        "Abre a frente do Airflow, em paralelo com as APIs. A migração e a carga esperam o resultado.",
+    ),
+    "Criar historia adequação airflow, vinculada ao fim da poc do Victor => necessario devido versao de airflow": (
+        "É a ida do Airflow da Azure para a GCP, por causa da versão. Não tem Card ID. Portal, Blob e backoffice dependem desse Airflow já na GCP. Os workloads com prd no nome ficam na produção.",
+        "Depois da spike. Carga e portal vêm em seguida.",
+    ),
+    "Conectividade com as fontes do diagrama": (
+        "O diagrama lê K2/Gliese, base federada, MDM, GSC, hospitais e MV. O card 424949 não cita essas fontes. O esperado é o Airflow na GCP alcançar as mesmas origens que hoje alimentam o Corporate.",
+        "Depois do Airflow na GCP e antes da carga. Sem as fontes o banco de HML não recebe dado.",
+    ),
+    "Staging SQL no caminho do Airflow em HML": (
+        "A documentação lista o banco STAGING_PRD, 2 vCores, no caminho até o Corporate. O esperado é saber se o Airflow que vai à GCP ainda grava nesse staging. Se não gravar, a linha sai.",
+        "Junto da migração do Airflow, antes da carga do banco que as APIs leem.",
+    ),
+    "Carga, no banco de HML, dos dados de exame, unidade e convênio que hoje estão no Corporate": (
+        "As APIs servem exame, unidade e convênio. O banco de HML existe e a cópia do SQL Server foi abortada. O esperado é esse banco receber os dados do Corporate, para o NAV e o CDC não consultarem vazio.",
+        "Depois do Airflow na GCP e das fontes. Antes do teste com os canais.",
+    ),
+    "451688": (
+        "Há 269 GB de Blob. A adaptação depende de Airflow, backend e frontend. O esperado é a aplicação ler o arquivo na GCP.",
+        "Depois do Airflow e do backend e do frontend do DP. A planilha não diz se o download D+1 usa este Blob.",
+    ),
+    "Cargas de cadastro": (
+        "Os cards 470165 e 470100 dependem das cargas de cadastro e não existe card só para elas. O diagrama tem o Portal de Cadastros. O esperado é a carga rodar no Airflow da GCP antes do portal abrir.",
+        "Antes dos workloads de portal que citam essa dependência.",
+    ),
+    "Downloads D+1 de cadastro": (
+        "Os mesmos cards dependem do download D+1 de cadastro. Não há card só para isso. O esperado é o arquivo do dia seguinte disponível em HML.",
+        "No mesmo bloco das cargas de cadastro, antes do portal.",
+    ),
+    "468966": (
+        "Backend do backoffice. A observação diz que depende do Airflow. O esperado é ele no ar depois que o Airflow estiver na GCP.",
+        "Abre o bloco do portal, antes do teste integrado.",
+    ),
+    "470165": (
+        "Tela portal-cadastro-web. Depende do Airflow pronto, das cargas de cadastro e do D+1. O repositório datp-backoffice-frontend-portal está cancelado e em discussão. O esperado é o portal de cadastro abrir em HML com esses dados.",
+        "Depois do Airflow, das cargas e do D+1.",
+    ),
+    "470100": (
+        "Frontend do backoffice, com a mesma dependência do portal-cadastro-web. O esperado é a mesma condição: Airflow, cargas e D+1 prontos.",
+        "Junto do portal-cadastro-web.",
+    ),
+    "451681": (
+        "Adaptação do backend do portal de cadastro. O esperado é o código ajustado para a HML, no mesmo bloco do portal.",
+        "Com os workloads do portal. A data de fevereiro da planilha não define a ordem.",
+    ),
+    "451677": (
+        "Adaptação do frontend do portal de cadastro. Só testa com tudo integrado. O esperado é a tela pronta para o teste do card 451689.",
+        "A adaptação fica neste bloco. O teste da tela fecha a HML.",
+    ),
+    "451689": (
+        "Único card de teste da equipe, sem escopo. O documento não define SLA. O esperado é o NAV, o CDC e o portal usarem exame, unidade e convênio na HML, com o mesmo contrato de hoje, e haver plano de rollback.",
+        "Fecha a homologação, depois das APIs, da busca, do dado e do portal.",
+    ),
+    "Teste de carga em HML": (
+        "Não há card, volume nem meta. O documento cita performance sem plano. O esperado é exercitar a HML depois do teste funcional e antes de planejar produção.",
+        "Logo depois do teste funcional. Produção só começa depois.",
+    ),
+    "Workspaces Databricks de HML e de PRD na GCP": (
+        "A decisão oficial é levar o Databricks para a GCP, não o desenho de BigQuery. A documentação lista o workspace de PRD adb-7665073515379548 e o de HML adb-887971986833958, sem jobs. O esperado é os dois workspaces rodarem na GCP. O card 478328 ficou na aba de discussão.",
+        "Depois do teste dos canais e antes da produção. O diagrama até as APIs não passa pelo Databricks, então o NAV e o CDC não esperam esta linha.",
+    ),
+    "GKE de produção": (
+        "A documentação cita o cluster aks-prd-cadastro01. O único GKE com card é o de HML, já concluído. O esperado é o cluster de produção existir só depois da HML testada.",
+        "Primeira linha de produção.",
+    ),
+    "470150": (
+        "Worker do Airflow de produção. O esperado é esta peça no ar depois da HML. A data 09/10/26 da planilha não antecipa a linha.",
+        "No bloco de produção, na ordem original da planilha.",
+    ),
+    "470149": (
+        "Workload principal do Airflow de produção. O esperado é ele no ar depois da HML.",
+        "No bloco de produção, na ordem original da planilha.",
+    ),
+    "470148": (
+        "Sincronização de usuários do Airflow de produção. O esperado é ela no ar depois da HML.",
+        "No bloco de produção, na ordem original da planilha.",
+    ),
+    "470146": (
+        "Scheduler do Airflow de produção. O esperado é ele no ar depois da HML.",
+        "No bloco de produção, na ordem original da planilha.",
+    ),
+    "470145": (
+        "Flower do Airflow de produção. O esperado é ele no ar depois da HML.",
+        "No bloco de produção, na ordem original da planilha.",
+    ),
+    "468978": (
+        "Migração do banco do Airflow de produção. O esperado é ela rodar depois da HML.",
+        "No bloco de produção, na ordem original da planilha.",
+    ),
+    "451683": (
+        "A documentação lista o Event Hub data-provider-prd. A planilha manda deixar por último e nenhuma API cita esse evento. O esperado é a troca para Pub/Sub na produção, não na prova dos canais.",
+        "No fim da produção, antes do cutover.",
+    ),
+    "451691": (
+        "Go-live sem escopo. O documento não define se a entrada é única ou gradual, nem DNS nem janela. O esperado é o plano de produção, só depois da HML aceita pelos canais.",
+        "Última linha de produção.",
+    ),
+    "470119": (
+        "Cancelado pela equipe, com observação de Cognitive Search. Os backends 469049 e 468966 seguem no caminho. O documento não descreve este card além disso.",
+        "Fora do caminho aberto. O cancelamento não tira a API de exam, que continua atrás do índice.",
+    ),
+    "451674": (
+        "Cancelado. A decisão oficial é levar o Databricks, não converter os ETLs para outra ferramenta.",
+        "Encerrado. Não volta para o caminho.",
+    ),
+    "424941": (
+        "Cancelado. Não há reescrita para PostgreSQL neste plano. O banco de HML já foi criado.",
+        "Encerrado.",
+    ),
+    "451676": (
+        "Abortado e concluído. O SQL Server não é copiado. A documentação diz que a réplica 3 não migra e está desligada. O dado segue pela carga no banco já criado.",
+        "Encerrado. A carga de HML cobre o que as APIs precisam ler.",
+    ),
+}
 
 
 def write_main(wb):
@@ -1039,6 +1319,9 @@ def write_main(wb):
             url,
             linha,
         ) = row
+        historia = STORIES.get(card_id or descricao)
+        if historia:
+            base, posicao = historia
         status, complexidade_somente = separar_status_e_complexidade(complexidade)
         origem_coluna = origem_visivel(origem)
         values = [
