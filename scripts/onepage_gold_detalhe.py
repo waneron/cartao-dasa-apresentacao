@@ -124,7 +124,7 @@ def build():
     panel_x = table_x + table_w + 16
     panel_w = width - 36 - panel_x
     panel_top = section_y + 14
-    panel_h = 168
+    panel_h = 132
     panel_bottom = panel_top - panel_h
     card(c, panel_x, panel_bottom, panel_w, panel_h)
     c.setFillColor(NAVY)
@@ -133,7 +133,6 @@ def build():
     bullets = [
         "Cerca de sete truncates retirados.",
         "Código reestruturado para publicação incremental nas sete tabelas.",
-        "A execução de 16/10 terminou às 02h13.",
     ]
     ty = panel_top - 52
     for bullet in bullets:
