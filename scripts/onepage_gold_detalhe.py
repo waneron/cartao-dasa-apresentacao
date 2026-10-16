@@ -159,7 +159,7 @@ def build():
     c.drawString(
         36,
         46,
-        "Azure Monitor, médias de 1 minuto. Métricas do banco inteiro. A CPU acumulada é estimada na janela e não mede custo.",
+        "Azure Monitor, médias de 1 minuto. Métricas do banco inteiro.",
     )
 
     footer = ImageReader(FOOTER)
